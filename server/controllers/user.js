@@ -38,8 +38,85 @@ export const addUser= async(req, res) => {
     .then(() => res.json('User added!'))
     .catch(err => res.status(400).json('Error: ' + err));
 };
+export const updateUser= async(req, res) => {
+   
+    user.findById(req.body.id)
+
+    .then(user => {
+        
+        if(!user){
+            res.status(400).json('Please enter a user' );}
+        else
+        if(user==null){
+            res.status(404).json('User not found ' );
+        }
+        else{
+            var keys = [];
+            
+
+            for (var key in req.body) { 
+                keys.push(key)}
+           
+            
+           for (let i = 0; i < keys.length; i++) {
+            if(keys[i] == "Email"){
+                user.Email = req.body.Email;
+            };
+            if(keys[i] == "Username"){
+                user.Username = req.body.Username;
+            };
+            if(keys[i] == "homeAddress"){
+                user.homeAddress = req.body.homeAddress;
+            };
+            if(keys[i] == "coutryCode"){
+                user.coutryCode = req.body.coutryCode;
+            };
+            if(keys[i] == "passportNumber"){
+                user.passportNumber = req.body.passportNumber;
+            };
+            if(keys[i] == "Password"){
+                user.Password = req.body.Password;
+            };
+            if(keys[i] == "Type"){
+                user.Type = req.body.Type;
+            };
+            if(keys[i] == "firstName"){
+                user.firstName = req.body.firstName;
+            };
+            if(keys[i] == "lastName"){
+               user.lastName = req.body.lastName;
+            };
+            if(keys[i] == "dateOfBirth"){
+                user.dateOfBirth = Date.parse(req.body.dateOfBirth);
+            }
+            if(keys[i] == "flightNumbers"){
+                user.flightNumbers = req.body.flightNumbers;
+            }
+        }
+        user.save()
+        
+        .then(() => {
+           
+            var updatedVlues="";
+            
+            for (var key in req.body) { 
+                updatedVlues+=key + " ";
+            }
+
+                
+            res.status(200).json("updated values: " + updatedVlues)
+         
+            })
+
+            
+        .catch(err => res.status(400).json('Error: ' + err));
+    }
+    
+      })
+      .catch(err => res.status(400).json('Error: ' + err));;
+};
 
 export const getUser =  async(req, res) => { 
     const test = await user.find()
       res.status(200).send(test);
-}
+};
