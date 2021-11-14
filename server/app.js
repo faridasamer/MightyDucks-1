@@ -2,6 +2,7 @@ import express from 'express'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose';
 import flightRoutes from './routes/flight.js';
+import userRoutes from './routes/user.js'
 
 
 
@@ -17,6 +18,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/flight', flightRoutes);
+app.use('/user', userRoutes);
+
 
 
 // THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
