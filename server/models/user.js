@@ -20,12 +20,14 @@ const userSchema = mongoose.Schema({
         unique: true
     },
     Password:{
-        type: String //SHOULD BE ENCRYPTED
+        type: String //encrypted
 
     },
     Type:{
         type: String,
-        length: 1 //N for NOrmal, A for Admin
+        length: 1,
+        enum : ['N','A'],
+        default: 'N'
     },
     firstName: String,
     lastName: String,

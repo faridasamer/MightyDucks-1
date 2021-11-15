@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import user from '../models/user.js';
-
+import bcrypt from 'bcrypt';
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ export const addUser= async(req, res) => {
   const coutryCode =req.body.coutryCode;
   const passportNumber =req.body.passportNumber;
   const Password =req.body.Password;
+  const passHashed = bcrypt.hashSync(Password, 10); //password after being hashed
   const Type =req.body.Type;
   const firstName =req.body.firstName;
   const lastName =req.body.lastName;
@@ -26,7 +27,7 @@ export const addUser= async(req, res) => {
     homeAddress:homeAddress,
     coutryCode:coutryCode,
     passportNumber:passportNumber,
-    Password:Password,
+    Password:passHashed, //adds the hashed password not plain text
     Type:Type,
     firstName:firstName,
     lastName:lastName,
@@ -75,7 +76,7 @@ export const updateUser= async(req, res) => {
                 user.passportNumber = req.body.passportNumber;
             };
             if(keys[i] == "Password"){
-                user.Password = req.body.Password;
+                user.Password = bcrypt.hashSync(req.body.Password, 10); //updates with the encrypted pass not plain text
             };
             if(keys[i] == "Type"){
                 user.Type = req.body.Type;
