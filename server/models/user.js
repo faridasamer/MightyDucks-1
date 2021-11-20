@@ -3,40 +3,54 @@ import mongoose from 'mongoose';
 const userSchema = mongoose.Schema({
     Email: { 
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     Username: { 
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
-    homeAddress: String,
-
+    homeAddress: {
+        type: String,
+        required: true
+    },
     coutryCode:{
         type:String,
-        length: 3
+        length: 3,
+        required: true
     },
     passportNumber: { 
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     Password:{
-        type: String //encrypted
-
+        type: String, //encrypted
+        required: true
     },
     Type:{
         type: String,
         length: 1,
         enum : ['N','A'],
-        default: 'N'
+        default: 'N',
+        required: true
     },
-    firstName: String,
-    lastName: String,
-
+    firstName: {
+        type: String,
+        required: true
+    },    
+    lastName: {
+        type: String,
+        required: true
+    },
     dateOfBirth: {
-        type:Date
+        type:Date,
+        required: true
     },
     flightNumbers: {
-        type:Array
+        type:Array,
+        required: true
     },
 });
 
