@@ -121,3 +121,9 @@ export const getUser =  async(req, res) => {
     const test = await user.find()
       res.status(200).send(test);
 };
+
+export const deleteUser = async(req, res) =>{
+    user.findByIdAndRemove(req.body.id)
+    .then(() => res.json('User Removed!'))
+    .catch(err => res.status(400).json('Error: ' + err));
+};

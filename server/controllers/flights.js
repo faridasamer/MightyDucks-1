@@ -107,4 +107,16 @@ export const updateFlight= async(req, res) => {
 export const getFlights =  async(req, res) => { 
     const test = await flights.find()
       res.status(200).send(test);
+};
+
+
+export const deleteFlight = async(req, res) =>{
+  flights.findByIdAndRemove(req.body.id)
+  .then(() => res.json('Flight Removed!'))
+  .catch(err => res.status(400).json('Error: ' + err));
+};
+
+export const searchFlights = async(req, res) =>{
+    const filteredFlights = await flights.find(req.body)
+    res.status(200).send(filteredFlights);
 }
