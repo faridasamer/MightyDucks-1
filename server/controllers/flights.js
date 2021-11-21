@@ -1,12 +1,9 @@
 import express from "express";
-import mongoose from "mongoose";
-
 import flights from "../models/flights.js";
 
 const router = express.Router();
 
 export const addFlights = async (req, res) => {
-  // console.log(req.body);
   const from = req.body.from;
   const to = req.body.to;
   const flightNumber = req.body.flightNumber;
@@ -35,7 +32,7 @@ export const addFlights = async (req, res) => {
 
 export const updateFlight = async (req, res) => {
   flights
-    .findById(req.body.id)
+    .findById(req.body._id)
 
     .then((flights) => {
       if (!flights) {
@@ -79,13 +76,13 @@ export const updateFlight = async (req, res) => {
           .save()
 
           .then(() => {
-            var updatedVlues = "";
+            var updatedValues = "";
 
             for (var key in req.body) {
-              updatedVlues += key + " ";
+              updatedValues += key + " ";
             }
 
-            res.status(200).json("updated values: " + updatedVlues);
+            res.status(200).json("updated values: " + updatedValues);
           })
 
           .catch((err) => res.status(400).json("Error: " + err));
@@ -94,21 +91,32 @@ export const updateFlight = async (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 };
 
-
-
-export const getFlights =  async(req, res) => { 
-    const test = await flights.find()
-      res.status(200).send(test);
+export const getFlights = async (req, res) => {
+  const test = await flights.find();
+  res.status(200).send(test);
 };
 
-
-export const deleteFlight = async(req, res) =>{
-  flights.findByIdAndRemove(req.body.id)
-  .then(() => res.json('Flight Removed!'))
-  .catch(err => res.status(400).json('Error: ' + err));
+export const deleteFlight = async (req, res) => {
+  if (req.body._id) {
+    flights
+      .findByIdAndRemove(req.body._id)
+      .catch((err) => res.status(400).json("Invalid Flight!"))
+      .then(() => res.json("Flight Removed!"));
+  } else {
+    res.status(400).json("Invalid Input!");
+  }
 };
 
-export const searchFlights = async(req, res) =>{
-    const filteredFlights = await flights.find(req.body)
+export const searchFlights = async (req, res) => {
+  if (req.body.from || req.body.to || req.body.flightNumber|| req.body.arrivalTime || req.body.departureTime|| req.body.seatsAvailableEco || req.body.seatsAvailableBus || req.body.seatsAvailableFirst || req.body._id) {
+    const filteredFlights = await flights
+      .find(req.body)
+      .catch((err) => res.status(404).send("No flights found"));
+    if (filteredFlights.length === 0) {
+      res.status(404).send("No flights found");
+    }
     res.status(200).send(filteredFlights);
-}
+  }else{
+    res.status(400).json("Invalid Input!");
+  }
+};

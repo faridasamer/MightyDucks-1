@@ -1,40 +1,32 @@
-import express from 'express'
-import cookieParser from 'cookie-parser'
-import mongoose from 'mongoose';
-import flightRoutes from './routes/flight.js';
-import userRoutes from './routes/user.js'
-
-
-
+import express from "express";
+import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import flightRoutes from "./routes/flight.js";
+import userRoutes from "./routes/user.js";
+import dotenv from "dotenv";
 
 var app = express();
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/flight', flightRoutes);
-app.use('/user', userRoutes);
+app.use("/flight", flightRoutes);
+app.use("/user", userRoutes);
 
-
-
-// THIS IS WRONG NEVER DO THAT !! Only for the task we put the DB Link here!! NEVER DO THAAAT AGAIN !!
-const MongoURI = 'mongodb+srv://mightyDucks:BadassMightyDucks@airportschema.3tfyg.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' ;
-
-
-//App variables
+const MongoURI = process.env.MONGODB_URI;
 const port = process.env.PORT || "8000";
 
-
-mongoose.connect(MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-.then(result =>console.log("MongoDB is now connected") )
-.catch(err => console.log(err));
-
+mongoose
+  .connect(MongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then((result) => console.log("MongoDB is now connected"))
+  .catch((err) => console.log(err));
 
 app.listen(port, () => {
-    console.log(`Listening to requests on http://localhost:${port}`);
-  });
+  console.log(`Listening to requests on http://localhost:${port}`);
+});
