@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt';
 const router = express.Router();
 
 export const addUser= async(req, res) => {
-  // console.log(req.body);
   const Email = req.body.Email;
   const Username = req.body.Username;
   const homeAddress =req.body.homeAddress;

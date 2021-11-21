@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import Navbar from "./components/Navbar";
-import { Box, Container, Typography } from "@mui/material";
+import { Box , Typography } from "@mui/material";
 
 ReactDOM.render(
   <React.StrictMode>
