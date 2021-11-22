@@ -2,8 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import user from '../models/user.js';
 import bcrypt from 'bcrypt';
-import isEmail from 'validator/lib/isEmail';
-import confirmEmail from '../api/account_verification.js';
 
 const router = express.Router();
 
@@ -22,7 +20,6 @@ export const addUser= async(req, res) => {
   const flightNumbers =req.body.flightNumbers;
 
 
-
   const newUser = new user({
     Email:Email,
     Username:Username,
@@ -36,11 +33,6 @@ export const addUser= async(req, res) => {
     dateOfBirth:dateOfBirth,
     flightNumbers:flightNumbers
   });
-  
-  isEmail(Email);
-  confirmEmail(Email);
-  resendLink(req, res);
-  isDate(dateOfBirth);
 
   newUser.save()
     .then(() => res.json('User added!'))
