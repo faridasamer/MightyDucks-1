@@ -79,10 +79,11 @@ export const updateFlight = async (req, res) => {
             var updatedValues = "";
 
             for (var key in req.body) {
-              updatedValues += key + " ";
+              updatedValues += key + ", ";
             }
-
-            res.status(200).json("updated values: " + updatedValues);
+            updatedVlues = updatedVlues.slice(0, -1) + ".";
+            updatedVlues = updatedVlues.slice(4);
+            res.status(200).json("updated values: " + updatedVlues)
           })
 
           .catch((err) => res.status(400).json("Error: " + err));
