@@ -23,6 +23,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
 import EditIcon from "@mui/icons-material/Edit";
+import Checkbox from "@mui/material/Checkbox";
 
 function DisplayFlight() {
   const [flights, setFlights] = useState([]);
@@ -30,7 +31,6 @@ function DisplayFlight() {
   const [openDelete, setOpenDelete] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [deleted, setDeleted] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
   const handleOpenEdit = () => setOpenEdit(true);
   const handleCloseEdit = () => setOpenEdit(false);
   const handleOpenDelete = () => setOpenDelete(true);
@@ -190,14 +190,14 @@ function DisplayFlight() {
                         color='error'
                         sx={{ m: 2 }}
                         onClick={() => handleDelete(row._id)}>
-                        Yes
+                        DELETE
                       </Button>
                       <Button
                         variant='outlined'
                         color='success'
                         sx={{ m: 2 }}
                         onClick={handleCloseDelete}>
-                        No
+                        CANCEL
                       </Button>
                     </Box>
                   </Modal>
@@ -206,9 +206,9 @@ function DisplayFlight() {
                     onClose={handleCloseEdit}
                     aria-labelledby='modal-modal-title'
                     aria-describedby='modal-modal-description'>
-                          <Box
-                              container
-                              direction="column"
+                    <Box
+                      container
+                      direction='column'
                       sx={{
                         position: "absolute",
                         top: "40%",
@@ -217,9 +217,8 @@ function DisplayFlight() {
                         bgcolor: "background.paper",
                         border: "2px solid #000",
                         boxShadow: 24,
-                                  p: 4,
-                                  gap: "1em",
-                        
+                        p: 4,
+                        gap: "1em",
                       }}>
                       <LocalizationProvider dateAdapter={DateAdapter}>
                         <Typography variant='h4' gutterBottom color='primary'>
@@ -468,49 +467,246 @@ function AddFlight() {
   );
 }
 
-function EditFlight() {}
+function SearchFlight() {
+  const [flightNumber, setFlightNumber] = useState("");
+  const [arrivalTime, setArrivalTime] = useState(moment());
+  const [departureTime, setDepartureTime] = useState(moment());
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [seatsAvailableBus, setSeatsAvailableBus] = useState("");
+  const [seatsAvailableEco, setSeatsAvailableEco] = useState("");
+  const [seatsAvailableFirst, setSeatsAvailableFirst] = useState("");
+  const [arrival, setArrival] = useState(false);
+  const [departure, setDeparture] = useState(false);
+  const [flights, setFlights] = useState([]);
+  
 
-function SearchFlight() {}
+  const handleChangeFlightNumber = (event) => {
+    setFlightNumber(event.target.value);
+  };
+  const handleChangeArrivalTime = (newValue) => {
+    setArrivalTime(moment.utc(moment.utc(newValue).format()));
+  };
+  const handleChangeDepartureTime = (newValue) => {
+    setDepartureTime(moment.utc(moment.utc(newValue).format()));
+  };
+  const handleChangeFrom = (event) => {
+    setFrom(event.target.value);
+  };
+  const handleChangeTo = (event) => {
+    setTo(event.target.value);
+  };
+  const handleChangeSeatsAvailableBus = (event) => {
+    setSeatsAvailableBus(event.target.value);
+  };
+  const handleChangeSeatsAvailableEco = (event) => {
+    setSeatsAvailableEco(event.target.value);
+  };
+  const handleChangeSeatsAvailableFirst = (event) => {
+    setSeatsAvailableFirst(event.target.value);
+  };
+  const handleArrival = (event) => {
+    setArrival(event.target.checked);
+  };
+  const handleDeparture = (event) => {
+    setDeparture(event.target.checked);
+  };
+  const handleSubmit = () => {
+    const res = {}
+    if (flightNumber !== "") {
+      res.flightNumber = flightNumber;
+    }
+    if (arrival) {
+      res.arrivalTime = arrivalTime;
+    }
+    if (departure) {
+      res.departureTime = departureTime;
+    }
+    if (from !== "") {
+      res.from = from;
+    }
+    if (to !== "") {
+      res.to = to;
+    }
+    if (seatsAvailableBus !== "") {
+      res.seatsAvailableBus = seatsAvailableBus;
+    }
+    if (seatsAvailableEco !== "") {
+      res.seatsAvailableEco = seatsAvailableEco;
+    }
+    if (seatsAvailableFirst !== "") {
+      res.seatsAvailableFirst = seatsAvailableFirst;
+    }
+    
+    axios
+      .post("http://localhost:8000/flight/search", res)
+      .then(function (response) {
+        setFlights(response.data);
+      }
+    ).catch(function (error) {
+      console.log(error);
+      setFlights([]);
+    }
+    );
+  };
 
-function RemoveFlight() {}
+  return (
+    <Grid
+      container
+      direction='column'
+      sx={{ width: "95%", gap: "2em", alignItems: "center" }}>
+      <LocalizationProvider dateAdapter={DateAdapter}>
+        <Typography variant='h4' gutterBottom color='primary'>
+          Search Flight
+        </Typography>
+        <TextField
+          label='Flight Number'
+          value={flightNumber}
+          onChange={handleChangeFlightNumber}
+          sx={{ width: "40%" }}
+        />
+        <Grid container sx={{ alignItems: "center", justifyContent: "center" }}>
+          <DateTimePicker
+            label='Arrival Time'
+            value={arrivalTime}
+            onChange={handleChangeArrivalTime}
+            disabled={!arrival}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                sx={{ width: "25%" }}
+                disabled={!arrival}
+              />
+            )}
+            sx={{ width: "25%" }}
+          />
+          <Checkbox
+            label='arrival'
+            checked={arrival}
+            onChange={handleArrival}
+          />
+          <DateTimePicker
+            label='Departure Time'
+            value={departureTime}
+            onChange={handleChangeDepartureTime}
+            disabled={!departure}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                sx={{ width: "25%" }}
+                disabled={!departure}
+              />
+            )}
+          />
+          <Checkbox
+            label='arrival'
+            checked={departure}
+            onChange={handleDeparture}
+          />
+        </Grid>
+
+        <TextField
+          label='From'
+          value={from}
+          onChange={handleChangeFrom}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='To'
+          value={to}
+          onChange={handleChangeTo}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='Seats Available Business'
+          value={seatsAvailableBus}
+          onChange={handleChangeSeatsAvailableBus}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='Seats Available Economy'
+          value={seatsAvailableEco}
+          onChange={handleChangeSeatsAvailableEco}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='Seats Available First Class'
+          value={seatsAvailableFirst}
+          onChange={handleChangeSeatsAvailableFirst}
+          sx={{ width: "40%" }}
+        />
+        <Button
+          variant='contained'
+          sx={{ width: "10%" }}
+          onClick={() => {
+            handleSubmit();
+          }}>
+          Find
+        </Button>
+      </LocalizationProvider>
+      <TableContainer component={Paper} sx={{ width: "95%" }}>
+        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              <TableCell align='center'>Flight Number</TableCell>
+              <TableCell align='center'>Arrival Time</TableCell>
+              <TableCell align='center'>Departure Time</TableCell>
+              <TableCell align='center'>from</TableCell>
+              <TableCell align='center'>to</TableCell>
+              <TableCell align='center'>Seats Available Business</TableCell>
+              <TableCell align='center'>Seats Available Economy</TableCell>
+              <TableCell align='center'>Seats Available First Class</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {flights.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                <TableCell align='center'>{row.flightNumber}</TableCell>
+                <TableCell align='center'>{row.arrivalTime}</TableCell>
+                <TableCell align='center'>{row.departureTime}</TableCell>
+                <TableCell align='center'>{row.from}</TableCell>
+                <TableCell align='center'>{row.to}</TableCell>
+                <TableCell align='center'>{row.seatsAvailableBus}</TableCell>
+                <TableCell align='center'>{row.seatsAvailableEco}</TableCell>
+                <TableCell align='center'>{row.seatsAvailableFirst}</TableCell>
+                <TableCell align='center'>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Grid>
+  );
+}
 
 function AdminDashboard() {
   const [add, setAdd] = useState(false);
-  const [edit, setEdit] = useState(false);
   const [display, setDisplay] = useState(true);
-  const [remove, setRemove] = useState(false);
   const [search, setSearch] = useState(false);
 
   const handleChange = (input) => {
     if (input === "add") {
       setAdd(true);
-      setEdit(false);
-      setDisplay(false);
-      setRemove(false);
       setSearch(false);
+      setDisplay(false);
     } else if (input === "edit") {
       setAdd(false);
-      setEdit(true);
       setDisplay(false);
-      setRemove(false);
       setSearch(false);
     } else if (input === "display") {
       setAdd(false);
-      setEdit(false);
       setDisplay(true);
-      setRemove(false);
       setSearch(false);
     } else if (input === "remove") {
       setAdd(false);
-      setEdit(false);
       setDisplay(false);
-      setRemove(true);
       setSearch(false);
     } else if (input === "search") {
       setAdd(false);
-      setEdit(false);
       setDisplay(false);
-      setRemove(false);
       setSearch(true);
     }
   };
@@ -553,9 +749,7 @@ function AdminDashboard() {
         }}
         container>
         {add && <AddFlight />}
-        {edit && <EditFlight />}
         {display && <DisplayFlight />}
-        {remove && <RemoveFlight />}
         {search && <SearchFlight />}
       </Grid>
     </Grid>
