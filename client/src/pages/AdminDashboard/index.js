@@ -76,6 +76,7 @@ function DisplayFlight() {
       })
       .then(function (response) {
         setDeleted(true);
+        handleCloseDelete();
       })
       .catch(function (error) {
         console.log(error);
