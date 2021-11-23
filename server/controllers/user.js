@@ -102,7 +102,7 @@ export const updateUser= async(req, res) => {
             for (var key in req.body) { 
                 updatedVlues+=key + ", ";
             }
-            updatedVlues = updatedVlues.slice(0, -1) + ".";
+            updatedVlues = updatedVlues.slice(0, -2) + ".";
             updatedVlues = updatedVlues.slice(4);
             res.status(200).json("updated values: " + updatedVlues)
          
