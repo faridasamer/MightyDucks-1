@@ -110,9 +110,8 @@ export const deleteFlight = async (req, res) => {
 
 export const searchFlights = async (req, res) => {
   if (req.body.from || req.body.to || req.body.flightNumber|| req.body.arrivalTime || req.body.departureTime|| req.body.seatsAvailableEco || req.body.seatsAvailableBus || req.body.seatsAvailableFirst || req.body._id) {
-    let sub_search = req.body.substring();
     const filteredFlights = await flights
-      .find(sub_search)
+      .find(req.body)
       .catch((err) => res.status(404).send("No flights found"));
     if (filteredFlights.length === 0) {
       res.status(404).send("No flights found");
