@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import user from '../models/user.js';
 import bcrypt from 'bcrypt';
+import isEmail from 'validator/lib/isEmail.js';
+import validator from 'validator';
 
 const router = express.Router();
 
@@ -33,7 +35,27 @@ export const addUser= async(req, res) => {
     dateOfBirth:dateOfBirth,
     flightNumbers:flightNumbers
   });
+  if(!isEmail(Email)){
+    res.status(400).json('Error: Invalid Email');
+    return;
+  }
 
+// if(!validator.isDate(dateOfBirth)){
+//   res.status(400).json('Error: Invalid Date'); 
+// }
+
+ function isUTCDate(str) {
+return/(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d)|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d)/
+.test(str);
+
+ }
+
+  if(!isUTCDate(dateOfBirth)) {
+    res.status(400).json('Error: Invalid Date Format');
+  }
+
+  
+ 
   newUser.save()
     .then(() => res.json('User added!'))
     .catch(err => res.status(400).json('Error: ' + err));
