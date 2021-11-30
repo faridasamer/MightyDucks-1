@@ -33,6 +33,14 @@ export const addUser= async(req, res) => {
     dateOfBirth:dateOfBirth,
     flightNumbers:flightNumbers
   });
+  if(!isEmail(Email)){
+    res.status(400).json('Error: Invalid Email');
+    return;
+  }
+
+if(!validator.isDate(dateOfBirth)){
+  res.status(400).json('Error: Invalid Date'); 
+}
 
   newUser.save()
     .then(() => res.json('User added!'))
