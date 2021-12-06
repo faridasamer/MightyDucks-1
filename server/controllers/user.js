@@ -40,7 +40,8 @@ export const addUser= async(req, res) => {
   }
 
 if(!validator.isDate(dateOfBirth)){
-  res.status(400).json('Error: Invalid Date'); 
+  res.status(400).json('Error: Invalid Date');
+  return;
 }
 
   newUser.save()
