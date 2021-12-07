@@ -39,11 +39,6 @@ export const addUser= async(req, res) => {
     return;
   }
 
-if(!validator.isDate(dateOfBirth)){
-  res.status(400).json('Error: Invalid Date');
-  return;
-}
-
   newUser.save()
     .then(() => res.json('User added!'))
     .catch(err => res.status(400).json('Error: ' + err));
