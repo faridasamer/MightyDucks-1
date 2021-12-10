@@ -382,6 +382,22 @@ function AddFlight() {
               Operation Successful!!
             </Alert>
           </Collapse>
+          <Collapse in={open}>
+            <Alert severity="error">
+               action={
+                <IconButton
+                  aria-label='close'
+                  color='inherit'
+                  size='small'
+                  onClick={() => {
+                    setOpen(false);
+                  }}>
+                  <CloseIcon fontSize='inherit' />
+                </IconButton>
+              }
+              Operation Failed!!
+            </Alert>
+          </Collapse>
         </Box>
         <Typography variant='h4' gutterBottom color='primary'>
           Add Flight
@@ -711,7 +727,6 @@ function AdminDashboard() {
       setSearch(true);
     }
   };
-
   return (
     <Grid direction='row' container>
       <Grid
