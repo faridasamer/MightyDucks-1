@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import user from '../models/user.js';
 import bcrypt from 'bcrypt';
+import validator from 'validator';
 
 const router = express.Router();
 
@@ -33,6 +34,10 @@ export const addUser= async(req, res) => {
     dateOfBirth:dateOfBirth,
     flightNumbers:flightNumbers
   });
+  if(!validator.isEmail(Email)){
+    res.status(400).json('Error: Invalid Email');
+    return;
+  }
 
   newUser.save()
     .then(() => res.json('User added!'))
