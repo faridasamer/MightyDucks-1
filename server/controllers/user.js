@@ -1,10 +1,7 @@
-import express from 'express';
-import mongoose from 'mongoose';
 import user from '../models/user.js';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 
-const router = express.Router();
 
 export const addUser= async(req, res) => {
   const Email = req.body.Email;

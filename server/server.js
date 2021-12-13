@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import flightRoutes from "./routes/flight.js";
 import userRoutes from "./routes/user.js";
+import mailRoutes from "./routes/mail.js";
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -16,6 +17,7 @@ app.use(cookieParser());
 
 app.use("/flight", flightRoutes);
 app.use("/user", userRoutes);
+app.use("/mail", mailRoutes);
 
 const MongoURI = process.env.MONGODB_URI;
 const port = process.env.PORT || "8000";

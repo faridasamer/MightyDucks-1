@@ -1,7 +1,5 @@
-import express from "express";
 import flights from "../models/flights.js";
 
-const router = express.Router();
 
 export const addFlights = async (req, res) => {
   const from = req.body.from;
