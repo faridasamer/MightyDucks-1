@@ -115,9 +115,12 @@ export const searchFlights = async (req, res) => {
       .catch((err) => res.status(404).send("No flights found"));
     if (filteredFlights.length === 0) {
       res.status(404).send("No flights found");
+      return;
     }
     res.status(200).send(filteredFlights);
+    return;
   }else{
     res.status(400).json("Invalid Input!");
+    return;
   }
 };

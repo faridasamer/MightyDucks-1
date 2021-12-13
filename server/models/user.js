@@ -50,6 +50,7 @@ const userSchema = mongoose.Schema({
     },
     flightNumbers: {
         type:Array,
+        default: [],
         required: true
     },
 });

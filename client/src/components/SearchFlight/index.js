@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from "react";
 
-import { Grid, Paper,  Button, Typography, TextField, Checkbox, Table, TableRow, TableCell, TableContainer, TableHead, TableBody } from "@mui/material";
+import { Grid, Paper,  Button, Typography, TextField, Checkbox, Table, TableRow, TableCell, TableContainer, TableHead, TableBody, CircularProgress } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from "@mui/lab";
 
 import axios from "axios";
@@ -21,6 +21,7 @@ function SearchFlight() {
     const [seatsAvailableFirst, setSeatsAvailableFirst] = useState("");
     const [arrival, setArrival] = useState(false);
     const [departure, setDeparture] = useState(false);
+    const [load, setLoad] = useState(false);
     const [flights, setFlights] = useState([]);
 
 //Change Functions
@@ -57,6 +58,7 @@ function SearchFlight() {
         
     //Search Function
     const handleSubmit = () => {
+        setLoad(true);
         const res = {};
         if (flightNumber !== "") {
             res.flightNumber = flightNumber;
@@ -86,11 +88,13 @@ function SearchFlight() {
         axios
             .post("http://localhost:8000/flight/search", res)
             .then(function (response) {
-            setFlights(response.data);
+                setFlights(response.data);
+                setLoad(false);
             })
             .catch(function (error) {
             console.log(error);
             setFlights([]);
+            setLoad(false);
             });
     };
 
@@ -194,6 +198,12 @@ function SearchFlight() {
                 <TableCell align='center'>Seats Available First Class</TableCell>
             </TableRow>
             </TableHead>
+            {load ? (
+        <CircularProgress
+          size={100}
+          style={{ alignSelf: "center", marginTop: "20%" }}
+        />
+      ) : (
             <TableBody>
             {flights.map((row) => (
                 <TableRow
@@ -210,7 +220,7 @@ function SearchFlight() {
                 <TableCell align='center'></TableCell>
                 </TableRow>
             ))}
-            </TableBody>
+            </TableBody>)}
         </Table>
         </TableContainer>
     </Grid>
