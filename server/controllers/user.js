@@ -136,7 +136,59 @@ export const deleteUser = async(req, res) =>{
 
 export const searchUsers = async (req, res) => {
     if (req.body.Email || req.body.Username || req.body.homeAddress|| req.body.countryCode || req.body.passportNumber || req.body.Password || req.body.Type || req.body.firstName || req.body.lastName || req.body.dateOfBirth ||req.body.flightNumbers || req.body._id) {
-      const filteredUsers = await user
+        if(req.body.Email){
+            req.body.Email=req.body.Email.toUpperCase();
+            req.body.Email= {'$regex' :  req.body.Email, '$options' : 'i'};
+        }
+          if(req.body.Username){
+            req.body.Username=req.body.Username.toUpperCase();
+            req.body.Username= {'$regex' :  req.body.Username, '$options' : 'i'};
+          }
+          if(req.body.homeAddress){
+            req.body.homeAddress=req.body.homeAddress.toUpperCase();
+            req.body.homeAddress= {'$regex' :  req.body.homeAddress, '$options' : 'i'};
+          }
+          if(req.body.countryCode){
+            req.body.countryCode=req.body.countryCode.toUpperCase();
+            req.body.countryCode= {'$regex' :  req.body.countryCode, '$options' : 'i'};
+          }
+          if(req.body.passportNumber){
+            req.body.passportNumber=req.body.passportNumber.toUpperCase();
+            req.body.passportNumber= {'$regex' :  req.body.passportNumber, '$options' : 'i'};
+          }
+          if(req.body.homeAddress){
+            req.body.homeAddress=req.body.homeAddress.toUpperCase();
+            req.body.homeAddress= {'$regex' :  req.body.homeAddress, '$options' : 'i'};
+          }
+          if(req.body.Password){
+            req.body.Password=req.body.Password.toUpperCase();
+            req.body.Password= {'$regex' :  req.body.Password, '$options' : 'i'};
+          }
+          if(req.body.Type){
+            req.body.Type=req.body.Type.toUpperCase();
+            req.body.Type= {'$regex' :  req.body.Type, '$options' : 'i'};
+          }
+          if(req.body.firstName){
+            req.body.firstName=req.body.firstName.toUpperCase();
+            req.body.firstName= {'$regex' :  req.body.firstName, '$options' : 'i'};
+          }
+          if(req.body.lastName){
+            req.body.lastName=req.body.lastName.toUpperCase();
+            req.body.lastName= {'$regex' :  req.body.lastName, '$options' : 'i'};
+          }
+          if(req.body.dateOfBirth){
+            req.body.dateOfBirth=req.body.dateOfBirth.toUpperCase();
+            req.body.dateOfBirth= {'$regex' :  req.body.dateOfBirth, '$options' : 'i'};
+          }
+          if(req.body.flightNumbers){
+            req.body.flightNumbers=req.body.flightNumbers.toUpperCase();
+            req.body.flightNumbers= {'$regex' :  req.body.flightNumbers, '$options' : 'i'};
+          }
+          if(req.body._id){
+            req.body._id=req.body._id.toUpperCase();
+            req.body._id= {'$regex' :  req.body._id, '$options' : 'i'};
+          }
+        const filteredUsers = await user
         .find(req.body)
         .catch((err) => res.status(404).send("No Users found"));
       if (filteredUsers.length === 0) {

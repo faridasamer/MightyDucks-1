@@ -1,4 +1,6 @@
+
 import flights from "../models/flights.js";
+
 
 
 export const addFlights = async (req, res) => {
@@ -106,8 +108,22 @@ export const deleteFlight = async (req, res) => {
   }
 };
 
+
+
 export const searchFlights = async (req, res) => {
   if (req.body.from || req.body.to || req.body.flightNumber|| req.body.arrivalTime || req.body.departureTime|| req.body.seatsAvailableEco || req.body.seatsAvailableBus || req.body.seatsAvailableFirst || req.body._id) {
+    if(req.body.flightNumber){
+      req.body.flightNumber=req.body.flightNumber.toUpperCase();
+      req.body.flightNumber= {'$regex' :  req.body.flightNumber, '$options' : 'i'};
+  }
+    if(req.body.from){
+      req.body.from=req.body.from.toUpperCase();
+      req.body.from= {'$regex' :  req.body.from, '$options' : 'i'};
+    }
+    if(req.body.to){
+      req.body.to=req.body.to.toUpperCase();
+      req.body.to= {'$regex' :  req.body.to, '$options' : 'i'};
+    }
     const filteredFlights = await flights
       .find(req.body)
       .catch((err) => res.status(404).send("No flights found"));
