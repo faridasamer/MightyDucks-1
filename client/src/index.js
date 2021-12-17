@@ -9,7 +9,7 @@ import { Box } from "@mui/material";
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Navbar />
+    <Navbar />
       <Box sx={{ mt: "1em" }}>
         <AdminDashboard />
       </Box>
