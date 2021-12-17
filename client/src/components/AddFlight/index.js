@@ -12,6 +12,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 function AddFlight() {
 //States 
   const [open, setOpen] = React.useState(false);
+  const [errorAlert, setErrorAlert] = React.useState(false);
   const [flightNumber, setFlightNumber] = useState("");
   const [arrivalTime, setArrivalTime] = useState(moment());
   const [departureTime, setDepartureTime] = useState(moment());
@@ -65,6 +66,7 @@ function AddFlight() {
               })
               .catch(function (error) {
                 console.log(error);
+                setErrorAlert(true);
               });
     }
 
@@ -93,6 +95,26 @@ function AddFlight() {
             </Alert>
           </Collapse>
         </Box>
+        
+<Box sx={{ width: "100%", placeItems: "center" }}>
+        <Collapse in={errorAlert}>
+            <Alert severity="error">
+               action={
+                <IconButton
+                  aria-label='close'
+                  color='inherit'
+                  size='small'
+                  onClick={() => {
+                    errorAlert(false);
+                  }}>
+                  <CloseIcon fontSize='inherit' />
+                </IconButton>
+              }
+              Operation Failed!!
+            </Alert>
+          </Collapse>
+          </Box>
+
         <Typography variant='h4' gutterBottom color='primary'>
           Add Flight
         </Typography>
