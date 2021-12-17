@@ -12,6 +12,10 @@ export const addFlights = async (req, res) => {
   const seatsAvailableEco = Number(req.body.seatsAvailableEco);
   const seatsAvailableBus = Number(req.body.seatsAvailableBus);
   const seatsAvailableFirst = Number(req.body.seatsAvailableFirst);
+  const priceEco = Number(req.body.priceEco);
+  const priceBus = Number(req.body.priceBus);
+  const priceFirst = Number(req.body.priceFirst);
+  const subscribers = [];
 
   const newFlight = new flights({
     from: from,
@@ -22,6 +26,10 @@ export const addFlights = async (req, res) => {
     seatsAvailableEco: seatsAvailableEco,
     seatsAvailableBus: seatsAvailableBus,
     seatsAvailableFirst: seatsAvailableFirst,
+    priceEco: priceEco,
+    priceBus: priceBus,
+    priceFirst: priceFirst,
+    subscribers: subscribers,
   });
 
   newFlight
@@ -47,43 +55,52 @@ export const updateFlight = async (req, res) => {
         }
 
         for (let i = 0; i < keys.length; i++) {
-          if (keys[i] == "from") {
+          if (keys[i] === "from") {
             flights.from = req.body.from;
           }
-          if (keys[i] == "to") {
+          if (keys[i] === "to") {
             flights.to = req.body.to;
           }
-          if (keys[i] == "flightNumber") {
+          if (keys[i] === "flightNumber") {
             flights.flightNumber = req.body.flightNumber;
           }
-          if (keys[i] == "arrivalTime") {
+          if (keys[i] === "arrivalTime") {
             flights.arrivalTime = req.body.arrivalTime;
           }
-          if (keys[i] == "departureTime") {
+          if (keys[i] === "departureTime") {
             flights.departureTime = req.body.departureTime;
           }
-          if (keys[i] == "seatsAvailableEco") {
+          if (keys[i] === "seatsAvailableEco") {
             flights.seatsAvailableEco = req.body.seatsAvailableEco;
           }
-          if (keys[i] == "seatsAvailableBus") {
+          if (keys[i] === "seatsAvailableBus") {
             flights.seatsAvailableBus = req.body.seatsAvailableBus;
           }
-          if (keys[i] == "seatsAvailableFirst") {
+          if (keys[i] === "seatsAvailableFirst") {
             flights.seatsAvailableFirst = req.body.seatsAvailableFirst;
+          }
+          if (keys[i] === "priceEco") {
+            flights.priceEco = req.body.priceEco;
+          }
+          if (keys[i] === "priceBus") {
+            flights.priceBus = req.body.priceBus;
+          }
+          if (keys[i] === "priceFirst") {
+            flights.priceFirst = req.body.priceFirst;
           }
         }
         flights
           .save()
 
           .then(() => {
-            var updatedVlues = "";
+            var updatedValues = "";
 
             for (var key in req.body) {
-              updatedVlues += key + ", ";
+              updatedValues += key + ", ";
             }
-            updatedVlues = updatedVlues.slice(0, -2) + ".";
-            updatedVlues = updatedVlues.slice(4);
-            res.status(200).json("updated values: " + updatedVlues)
+            updatedValues = updatedValues.slice(0, -2) + ".";
+            updatedValues = updatedValues.slice(4);
+            res.status(200).json("updated values: " + updatedValues)
           })
 
           .catch((err) => res.status(400).json("Error: " + err));
@@ -111,7 +128,7 @@ export const deleteFlight = async (req, res) => {
 
 
 export const searchFlights = async (req, res) => {
-  if (req.body.from || req.body.to || req.body.flightNumber|| req.body.arrivalTime || req.body.departureTime|| req.body.seatsAvailableEco || req.body.seatsAvailableBus || req.body.seatsAvailableFirst || req.body._id) {
+  if (req.body.from || req.body.to || req.body.flightNumber|| req.body.arrivalTime || req.body.departureTime|| req.body.seatsAvailableEco || req.body.seatsAvailableBus || req.body.seatsAvailableFirst || req.body._id || req.body.priceEco || req.body.priceBus || req.body.priceFirst) {
     if(req.body.flightNumber){
       req.body.flightNumber=req.body.flightNumber.toUpperCase();
       req.body.flightNumber= {'$regex' :  req.body.flightNumber, '$options' : 'i'};
@@ -138,3 +155,92 @@ export const searchFlights = async (req, res) => {
     return;
   }
 };
+
+export const subscribeFlight = async (req, res) => {
+  const subscriber = JSON.stringify(req.body.subscriber);
+  console.log(subscriber);
+  if (req.body._id && req.body.subscriber) {
+    flights
+      .findById(req.body._id)
+      .then((flights) => {
+        if (!flights) {
+          res.status(400).json("Please enter a flight");
+        } else if (flights == null) {
+          res.status(404).json("Flight not found ");
+        } else if (flights.subscribers.includes(subscriber)) {
+            res.status(400).json("Already subscribed");
+        }
+        else {
+            flights.subscribers.push(subscriber);
+            flights
+              .save()
+              .then(() => res.json("user added!"))
+              .catch((err) => res.status(400).json("Error: " + err));
+          }
+      })
+  } else {
+    res.status(400).json("Invalid Input!");
+  }
+};
+
+export const unsubscribeFlight = async (req, res) => {
+  const subscriber = JSON.stringify(req.body.subscriber);
+  if (req.body._id && req.body.subscriber) {
+    flights
+      .findById(req.body._id)
+      .then((flights) => {
+        if (!flights) {
+          res.status(400).json("Please enter a flight");
+        } else if (flights == null) {
+          res.status(404).json("Flight not found ");
+        } else if (!flights.subscribers.includes(subscriber)) {
+          res.status(400).json("Not subscribed");
+        } else {
+          flights.subscribers.splice(flights.subscribers.indexOf(subscriber), 1);
+          flights
+            .save()
+            .then(() => res.json("user removed!"))
+            .catch((err) => res.status(400).json("Error: " + err));
+        }
+      })
+  } else {
+    res.status(400).json("Invalid Input!");
+  }
+};
+
+export const getFlight = async (req, res) => {
+  if (req.body._id) {
+    flights
+      .findById(req.body._id)
+      .then((flights) => {
+        if (!flights) {
+          res.status(400).json("Please enter a flight");
+        } else if (flights == null) {
+          res.status(404).json("Flight not found ");
+        } else {
+          res.status(200).json(flights);
+        }
+      })
+  } else {
+    res.status(400).json("Invalid Input!");
+  }
+}
+
+export const getFlightByFlightNumber = async (req, res) => {
+  if (req.body.flightNumber) {
+    flights
+      .findOne({ flightNumber: req.body.flightNumber })
+      .then((flights) => {
+        if (!flights) {
+          res.status(400).json("Please enter a flight");
+        } else if (flights == null) {
+          res.status(404).json("Flight not found ");
+        } else {
+          res.status(200).json(flights);
+        }
+      })
+  } else {
+    res.status(400).json("Invalid Input!");
+  }
+}
+
