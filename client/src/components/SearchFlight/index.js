@@ -199,7 +199,7 @@ function SearchFlight() {
             </TableRow>
             </TableHead>
             {load ? (
-        <CircularProgress
+        <CircularProgress 
           size={100}
           style={{ alignSelf: "center", marginTop: "20%" }}
         />
