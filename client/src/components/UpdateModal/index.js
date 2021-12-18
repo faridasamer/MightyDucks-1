@@ -22,7 +22,12 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
     const [to, setTo] = useState("");
     const [seatsAvailableBus, setSeatsAvailableBus] = useState("");
     const [seatsAvailableEco, setSeatsAvailableEco] = useState("");
-    const [seatsAvailableFirst, setSeatsAvailableFirst] = useState("");
+  const [seatsAvailableFirst, setSeatsAvailableFirst] = useState("");
+  const [priceBus, setPriceBus] = useState("");
+  const [priceEco, setPriceEco] = useState("");
+  const [priceFirst, setPriceFirst] = useState("");
+
+
 
     //update methods
      const handleChangeFlightNumber = (event) => {
@@ -48,7 +53,17 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
      };
      const handleChangeSeatsAvailableFirst = (event) => {
        setSeatsAvailableFirst(event.target.value);
-     };
+  };
+  const handleChangePriceBus = (event) => {
+    setPriceBus(event.target.value);
+  };
+  const handleChangePriceEco = (event) => {
+    setPriceEco(event.target.value);
+  };
+  const handleChangePriceFirst = (event) => {
+    setPriceFirst(event.target.value);
+  };
+
     
     //update flight
     const handleUpdate = () => {
@@ -63,6 +78,9 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
                             seatsAvailableBus: seatsAvailableBus,
                             seatsAvailableEco: seatsAvailableEco,
                             seatsAvailableFirst: seatsAvailableFirst,
+                            priceBus: priceBus,
+                            priceEco: priceEco,
+                            priceFirst: priceFirst
                           })
                           .then(function (response) {
                             handleCloseEdit();
@@ -81,7 +99,10 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
         setTo(flight.to);
         setSeatsAvailableBus(flight.seatsAvailableBus);
         setSeatsAvailableEco(flight.seatsAvailableEco);
-        setSeatsAvailableFirst(flight.seatsAvailableFirst);
+    setSeatsAvailableFirst(flight.seatsAvailableFirst);
+    setPriceBus(flight.priceBus);
+    setPriceEco(flight.priceEco);
+    setPriceFirst(flight.priceFirst);
     }, [flight]);
 
 
@@ -114,7 +135,7 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
               value={flightNumber}
               onChange={handleChangeFlightNumber}
               defaultValue={flight.flightNumber}
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
             />
             <DateTimePicker
               label='Arrival Time'
@@ -123,14 +144,17 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
               renderInput={(params) => (
                 <TextField {...params} sx={{ width: "40%" }} />
               )}
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", mt: "1em" }}
             />
             <DateTimePicker
               label='Departure Time'
               value={departureTime}
               onChange={handleChangeDepartureTime}
               renderInput={(params) => (
-                <TextField {...params} sx={{ width: "40%" }} />
+                <TextField
+                  {...params}
+                  sx={{ width: "40%", mb: "1em", mr: "1em" }}
+                />
               )}
             />
             <TextField
@@ -138,42 +162,64 @@ function UpdateModal({flight, openEdit, handleCloseEdit}) {
               value={from}
               onChange={handleChangeFrom}
               defaultValue={flight.from}
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
             />
             <TextField
               label='To'
               value={to}
               onChange={handleChangeTo}
               defaultValue={flight.to}
-              sx={{ width: "40%" }}
-            />
-            <TextField
-              label='Seats Available Business'
-              value={seatsAvailableBus}
-              onChange={handleChangeSeatsAvailableBus}
-              defaultValue={flight.seatsAvailableBus}
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
             />
             <TextField
               label='Seats Available Economy'
               value={seatsAvailableEco}
               onChange={handleChangeSeatsAvailableEco}
               defaultValue={flight.seatsAvailableEco}
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
+            />
+            <TextField
+              label='Seats Available Business'
+              value={seatsAvailableBus}
+              onChange={handleChangeSeatsAvailableBus}
+              defaultValue={flight.seatsAvailableBus}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
             />
             <TextField
               label='Seats Available First Class'
               value={seatsAvailableFirst}
               onChange={handleChangeSeatsAvailableFirst}
               defaultValue={flight.seatsAvailableFirst}
-              sx={{ width: "40%" }}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
+            />
+            <TextField
+              label='Price Economy'
+              value={priceEco}
+              onChange={handleChangePriceEco}
+              defaultValue={flight.priceEco}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
+            />
+            <TextField
+              label='Price Business'
+              value={priceBus}
+              onChange={handleChangePriceBus}
+              defaultValue={flight.priceBus}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
+            />
+            <TextField
+              label='Price First Class'
+              value={priceFirst}
+              onChange={handleChangePriceFirst}
+              defaultValue={flight.priceFirst}
+              sx={{ width: "40%", mb: "1em", mr: "1em" }}
             />
             <Button
               variant='contained'
               color='primary'
               onClick={() => {
                 handleUpdate();
-              }}>
+              }}
+              sx={{ mb: "1em", mr: "1em" }}>
               Modify Flight
             </Button>
           </LocalizationProvider>
