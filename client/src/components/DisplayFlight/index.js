@@ -53,11 +53,14 @@ function DisplayFlight() {
                 <TableCell align='center'>Departure Time</TableCell>
                 <TableCell align='center'>from</TableCell>
                 <TableCell align='center'>to</TableCell>
-                <TableCell align='center'>Seats Available Business</TableCell>
                 <TableCell align='center'>Seats Available Economy</TableCell>
-                <TableCell align='center'>
-                  Seats Available First Class
-                </TableCell>
+                <TableCell align='center'>Seats Available Business</TableCell>
+                <TableCell align='center'>Seats Available First</TableCell>
+                <TableCell align='center'>Price Economy</TableCell>
+                <TableCell align='center'>Price Business</TableCell>
+                <TableCell align='center'>Price First</TableCell>
+                <TableCell align='center'>Delete</TableCell>
+                <TableCell align='center'>Edit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -70,11 +73,14 @@ function DisplayFlight() {
                   <TableCell align='center'>{row.departureTime}</TableCell>
                   <TableCell align='center'>{row.from}</TableCell>
                   <TableCell align='center'>{row.to}</TableCell>
-                  <TableCell align='center'>{row.seatsAvailableBus}</TableCell>
                   <TableCell align='center'>{row.seatsAvailableEco}</TableCell>
+                  <TableCell align='center'>{row.seatsAvailableBus}</TableCell>
                   <TableCell align='center'>
                     {row.seatsAvailableFirst}
                   </TableCell>
+                  <TableCell align='center'>{row.priceEco}</TableCell>
+                  <TableCell align='center'>{row.priceBus}</TableCell>
+                  <TableCell align='center'>{row.priceFirst}</TableCell>
                   <TableCell align='center'>
                     <IconButton
                       aria-label='delete'
