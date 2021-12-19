@@ -1,6 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Button } from '@mui/material';
-import { Avatar} from '@mui/material';
+import { Grid, Typography, Button, Avatar } from '@mui/material';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';

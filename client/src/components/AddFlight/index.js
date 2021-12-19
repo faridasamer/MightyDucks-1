@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import moment from "moment";
 import DateAdapter from "@mui/lab/AdapterMoment";
+import {formatDate} from "../../API/formatDate.js";
 
 function AddFlight() {
 //States 
@@ -21,6 +22,9 @@ function AddFlight() {
   const [seatsAvailableBus, setSeatsAvailableBus] = useState("");
   const [seatsAvailableEco, setSeatsAvailableEco] = useState("");
   const [seatsAvailableFirst, setSeatsAvailableFirst] = useState("");
+  const [priceBus, setPriceBus] = useState("");
+  const [priceEco, setPriceEco] = useState("");
+  const [priceFirst, setPriceFirst] = useState("");
     
 //Change functions
   const handleChangeFlightNumber = (event) => {
@@ -46,7 +50,17 @@ function AddFlight() {
   };
   const handleChangeSeatsAvailableFirst = (event) => {
     setSeatsAvailableFirst(event.target.value);
-    };
+  };
+  const handleChangePriceBus = (event) => {
+    setPriceBus(event.target.value);
+  };
+  const handleChangePriceEco = (event) => {
+    setPriceEco(event.target.value);
+  };
+  const handleChangePriceFirst = (event) => {
+    setPriceFirst(event.target.value);
+  };
+
 
 //Submit function
   const handleSubmit = (event) => {
@@ -60,6 +74,9 @@ function AddFlight() {
                 seatsAvailableBus,
                 seatsAvailableEco,
                 seatsAvailableFirst,
+                priceBus,
+                priceEco,
+                priceFirst,
               })
               .then(function (response) {
                 setOpen(true);
@@ -69,6 +86,8 @@ function AddFlight() {
                 setErrorAlert(true);
               });
     }
+    formatDate(arrivalTime);
+    formatDate(departureTime);
 
   return (
     <Grid
@@ -95,25 +114,27 @@ function AddFlight() {
             </Alert>
           </Collapse>
         </Box>
-        
-<Box sx={{ width: "100%", placeItems: "center" }}>
-        <Collapse in={errorAlert}>
-            <Alert severity="error">
-               action={
+
+        <Box sx={{ width: "100%", placeItems: "center" }}>
+          <Collapse in={errorAlert}>
+            <Alert
+              action={
                 <IconButton
                   aria-label='close'
                   color='inherit'
                   size='small'
                   onClick={() => {
-                    errorAlert(false);
+                    setErrorAlert(false);
                   }}>
                   <CloseIcon fontSize='inherit' />
                 </IconButton>
               }
+              sx={{ mb: 2 }}
+              severity='error'>
               Operation Failed!!
             </Alert>
           </Collapse>
-          </Box>
+        </Box>
 
         <Typography variant='h4' gutterBottom color='primary'>
           Add Flight
@@ -154,21 +175,39 @@ function AddFlight() {
           sx={{ width: "40%" }}
         />
         <TextField
-          label='Seats Available Business'
-          value={seatsAvailableBus}
-          onChange={handleChangeSeatsAvailableBus}
-          sx={{ width: "40%" }}
-        />
-        <TextField
           label='Seats Available Economy'
           value={seatsAvailableEco}
           onChange={handleChangeSeatsAvailableEco}
           sx={{ width: "40%" }}
         />
         <TextField
+          label='Seats Available Business'
+          value={seatsAvailableBus}
+          onChange={handleChangeSeatsAvailableBus}
+          sx={{ width: "40%" }}
+        />
+        <TextField
           label='Seats Available First Class'
           value={seatsAvailableFirst}
           onChange={handleChangeSeatsAvailableFirst}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='Price Economy'
+          value={priceEco}
+          onChange={handleChangePriceEco}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='Price Business'
+          value={priceBus}
+          onChange={handleChangePriceBus}
+          sx={{ width: "40%" }}
+        />
+        <TextField
+          label='Price First Class'
+          value={priceFirst}
+          onChange={handleChangePriceFirst}
           sx={{ width: "40%" }}
         />
         <Button
