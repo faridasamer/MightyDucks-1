@@ -7,6 +7,7 @@ import { LocalizationProvider, DateTimePicker } from "@mui/lab";
 import axios from "axios";
 import moment from "moment";
 import DateAdapter from "@mui/lab/AdapterMoment";
+import {formatDate} from "../../API/formatDate.js";
 
 function SearchFlight() {
 
@@ -119,6 +120,8 @@ function SearchFlight() {
             setLoad(false);
             });
     };
+    formatDate(arrivalTime);
+    formatDate(departureTime);
 
     return (
       <Grid
