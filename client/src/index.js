@@ -5,6 +5,7 @@ import theme from "./theme";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/Login";
 import { Box } from "@mui/material";
+import ReservedFlightsDetails from "./pages/ReservedFlights";
 
 ReactDOM.render(
   <React.StrictMode>
