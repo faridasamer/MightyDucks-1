@@ -4,14 +4,15 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/Login";
-import UserSearch from "./components/UserSearch"
 import { Box } from "@mui/material";
+import ReservedFlightsDetails from "./pages/ReservedFlights";
 
 ReactDOM.render(
   <React.StrictMode>
     <Box sx={{m:-1, overflowX:"hidden"}} >
       <ThemeProvider theme={theme}>
-          <UserSearch />
+        <Navbar />
+          <AdminDashboard />
       </ThemeProvider>
     </Box>
   </React.StrictMode>,
