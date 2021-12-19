@@ -5,13 +5,14 @@ import theme from "./theme";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/AdminDashboard";
 import { Box } from "@mui/material";
+import ReservedFlightsDetails from "./pages/ReservedFlights";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-    <Navbar />
+    {/* <Navbar /> */}
       <Box sx={{ mt: "1em" }}>
-        <AdminDashboard />
+        <ReservedFlightsDetails />
       </Box>
     </ThemeProvider>
   </React.StrictMode>,
