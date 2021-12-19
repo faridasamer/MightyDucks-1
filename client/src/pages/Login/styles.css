@@ -1,0 +1,7 @@
+    @media  screen and (max-width: 1366px) {
+        #img{
+    right: 15em !important;
+    top:6em !important;
+    width:169%
+    }
+}

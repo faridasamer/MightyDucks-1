@@ -1,22 +1,28 @@
-import {React, useState} from "react";
-import { Grid, Typography, TextField, InputAdornment, Button } from "@mui/material";
-import {PersonOutlineOutlined, HttpsOutlined} from "@mui/icons-material/";
+import { React, useState } from "react";
+import {
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Button,
+} from "@mui/material";
+import { PersonOutlineOutlined, HttpsOutlined } from "@mui/icons-material/";
 import IMG from "../../assets/Ticket.png";
+import "./styles.css";
 
 function Login() {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
-  }
+  };
   const handlePassword = (e) => {
     setPassword(e.target.value);
-  }
+  };
 
-  const handleSubmit = () => {}
-  const handleForget = () => {}
+  const handleSubmit = () => {};
+  const handleForget = () => {};
 
   return (
     <Grid
@@ -26,11 +32,12 @@ function Login() {
         backgroundColor: "primary.main",
         height: "100vh",
         ml: "-1em",
-        width: "102%",
+        width: {m:"102%", xs:"104%"},
       }}>
       <Grid
         sx={{
-          width: "auto",
+          display: { xs: "none", md: "block" },
+          width: { xl: "auto", md: "44%" },
           position: "relative",
           paddingLeft: "16em",
           paddingTop: "2em",
@@ -41,10 +48,16 @@ function Login() {
         <img
           src={IMG}
           alt='logo'
-          style={{ position: "relative", right: "10em", top: "4em" }}
+          id='img'
+          style={{
+            position: "relative",
+            right: "10em",
+            top: "4em"
+            
+          }}
         />
       </Grid>
-      <Grid sx={{ ml: 15, mt: 30 }}>
+      <Grid sx={{ ml: {md:15, xs: 6}, mt: {xl:30, xs:10, l:10}, width:{xs:"85%", md:"auto"}}}>
         <Typography
           variant='subtitle1'
           sx={{
