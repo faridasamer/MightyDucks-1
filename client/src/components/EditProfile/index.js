@@ -7,7 +7,7 @@ import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
-import { LocalizationProvider, DateTimePicker } from "@mui/lab";
+import { LocalizationProvider, DatePicker } from "@mui/lab";
 import moment from "moment";
 import DateAdapter from "@mui/lab/AdapterMoment";
 
@@ -86,7 +86,7 @@ function EditProfile() {
             value={passportNumber} onChange={handleChangePassportNumber} variant="standard" size="small" 
             sx={{ width: "17%" }}/></Grid>
             <Grid container sx={{ml: 40, mb: 5}}><DateRangeOutlinedIcon sx={{mr: 1, mt:1.75}}/>
-            <DateTimePicker label="Date of Birth" value={dateOfBirth} onChange={handleDateOfBirth}
+            <DatePicker label="Date of Birth" value={dateOfBirth} onChange={handleDateOfBirth}
             renderInput={(params) => (
                 <TextField {...params} sx={{ width: "17%"}} variant="standard" />
             )}
