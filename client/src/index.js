@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import User from "./pages/UserProfile";
 import EditProfile from "./components/EditProfile";
+import Booking from "./pages/Booking";
 
 ReactDOM.render(
   <Router>
@@ -22,6 +23,7 @@ ReactDOM.render(
           <Route path='home' element={<Home />} />
           <Route path='user' element={<User />} />
           <Route path='user/modify/:id' element={<EditProfile />} />
+          <Route path='home/booking/:id' element={<Booking />} />
         </Routes>
       </ThemeProvider>
     </Box>

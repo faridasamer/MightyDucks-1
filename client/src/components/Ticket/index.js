@@ -55,7 +55,7 @@ function Ticket({ flight, cabinClass, onClick }) {
             Price :
           </Typography>
           <Typography variant='h4'>{price}$</Typography>
-          <Link to="./booking">
+          <Link to="booking/214214" replace={true} state={{flight:flight, cabinClass: cabinClass}}>
             <Button
               variant='contained'
               endIcon={<SendIcon />}
