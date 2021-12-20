@@ -72,8 +72,8 @@ export const updateUser= async(req, res) => {
             if(keys[i] === "homeAddress"){
                 user.homeAddress = req.body.homeAddress;
             };
-            if(keys[i] === "coutryCode"){
-                user.coutryCode = req.body.coutryCode;
+            if(keys[i] === "countryCode"){
+                user.countryCode = req.body.countryCode;
             };
             if(keys[i] === "passportNumber"){
                 user.passportNumber = req.body.passportNumber;
@@ -369,13 +369,17 @@ export const searchFlights = async (req, res) => {
     query.baggage = req.body.baggage;
   }
 
+  if (!req.body.from || !req.body.to || !req.body.class) {
+    res.status(400).json("Invalid Input!");
+    return;
+  }
   let flights = [];
   axios.post("http://localhost:8000/flight/search", 
     query
   ) 
     .then(async (response) => {
       if (response.data.length === 0) {
-        res.status(404).json("No Flights found!");
+        res.status(200).json(flights);
       } else {
         for (const flight in response.data) {
           if (

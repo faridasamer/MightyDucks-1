@@ -3,16 +3,16 @@ import { Grid, Paper, Select, FormControl, MenuItem, InputLabel, TextField, Butt
 import { LocalizationProvider, DatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import moment from "moment";
-import { formatDate } from "../../API/formatDate";
 
-function UserSearch() {
+
+function UserSearch({search}) {
 
     const [cabinClass, setCabinClass] = React.useState('');
     const [flightFrom, setFlightFrom] = React.useState('');
     const [flightTo, setFlightTo] = React.useState('');
     const [departure, setDeparture] = React.useState(moment());
     const [ret, setReturn] = React.useState(moment());
-    const [passengers, setPassengers] = React.useState('');
+    const [passengers, setPassengers] = React.useState(1);
 
   const handleChangeCabinClass = (event) => {
     setCabinClass(event.target.value);
@@ -33,8 +33,6 @@ function UserSearch() {
     setPassengers(event.target.value);
   };
 
-  const handleSubmit = () => {
-  };
 
     return (
         <Grid container direction='row' wrap='nowrap'justifyContent="center"
@@ -43,7 +41,7 @@ function UserSearch() {
             <Paper elevation={24}
                    variant='outlined'
                    sx={{ width: "60%", height: "17em", mt:"1em"}}>
-                <Grid container direction='column' sx={{ mt: "2em", ml: "1.5em" }} wrap='nowrap'>
+                <Grid container direction='column' sx={{ mt: "2em", ml: "12%" }} wrap='nowrap'>
                     <Grid container direction='row' wrap='nowrap'>
                         <Grid item ><FormControl >
                                 <InputLabel id="demo-simple-select-label">Cabin Class</InputLabel>
@@ -54,8 +52,8 @@ function UserSearch() {
                                     label="Cabin Class"
                                     sx={{mb:"2em", mr:"1em", width:"13.5em"}}
                                     onChange={handleChangeCabinClass}>
-                                    <MenuItem value={"Economy"}>Economy</MenuItem>
-                                    <MenuItem value={"Business"}>Business</MenuItem>
+                                    <MenuItem value={"Eco"}>Economy</MenuItem>
+                                    <MenuItem value={"Bus"}>Business</MenuItem>
                                     <MenuItem value={"First"}>First</MenuItem>
                                 </Select>
                                 </FormControl>
@@ -91,7 +89,7 @@ function UserSearch() {
                     <DatePicker label="Return" value ={ret}  onChange={handleChangeReturn} renderInput={(params) => (<TextField {...params} sx={{ width: "20%", mr:"2em"}} />)}
                     sx={{ width: "20%", mr:"2em" }}/>
                     </Grid>
-                    <Grid item><Button variant="contained" onClick={()=>handleSubmit()} >Search</Button></Grid>
+                    <Grid item><Button variant="contained" onClick={()=>(search(cabinClass, passengers, departure, ret,flightFrom,flightTo))} >Search</Button></Grid>
                 </Grid>
 
 
