@@ -1,6 +1,7 @@
 
 import flights from "../models/flights.js";
-import axios  from "axios";
+import axios from "axios";
+import {compareDate}  from "../API/compareDate.js"
 
 
 
@@ -129,30 +130,74 @@ export const deleteFlight = async (req, res) => {
 
 
 export const searchFlights = async (req, res) => {
-  if (req.body.from || req.body.to || req.body.flightNumber|| req.body.arrivalTime || req.body.departureTime|| req.body.seatsAvailableEco || req.body.seatsAvailableBus || req.body.seatsAvailableFirst || req.body._id || req.body.priceEco || req.body.priceBus || req.body.priceFirst) {
-    if(req.body.flightNumber){
+    let filteredFlights = []
+    const body={}
+    if (req.body.flightNumber) {
       req.body.flightNumber=req.body.flightNumber.toUpperCase();
-      req.body.flightNumber= {'$regex' :  req.body.flightNumber, '$options' : 'i'};
+      body.flightNumber= {'$regex' :  req.body.flightNumber, '$options' : 'i'};
   }
     if(req.body.from){
       req.body.from=req.body.from.toUpperCase();
-      req.body.from= {'$regex' :  req.body.from, '$options' : 'i'};
+      body.from= {'$regex' :  req.body.from, '$options' : 'i'};
     }
     if(req.body.to){
       req.body.to=req.body.to.toUpperCase();
-      req.body.to= {'$regex' :  req.body.to, '$options' : 'i'};
+      body.to= {'$regex' :  req.body.to, '$options' : 'i'};
     }
-    const filteredFlights = await flights
-      .find(req.body)
-      .catch((err) => res.status(404).send("No flights found"));
-    if (filteredFlights.length === 0) {
-      res.status(404).send("No flights found");
-      return;
+    if (req.body.seatsAvailableBus) {
+      body.seatsAvailableBus = req.body.seatsAvailableBus;
     }
+    if (req.body.seatsAvailableEco) {
+      body.seatsAvailableEco = req.body.seatsAvailableEco;
+    }
+    if (req.body.seatsAvailableFirst) {
+      body.seatsAvailableFirst = req.body.seatsAvailableFirst;
+    }
+    if (req.body.priceEco) {
+      body.priceEco = req.body.priceEco;
+    }
+    if (req.body.priceBus) {
+      body.priceBus = req.body.priceBus;
+    }
+    if (req.body.priceFirst) {
+      body.priceFirst = req.body.priceFirst;
+    }
+    if (body === {}) {
+             filteredFlights = await flights.find();
+    } else {
+       filteredFlights = await flights
+        .find(body)
+        .catch((err) => res.status(404).send("No flights found"));
+    }
+    if (req.body.arrivalTime || req.body.departureTime) {
+      if (req.body.arrivalTime &&!req.body.departureTime) {
+        let flights = [];
+        for (let i = 0; i < filteredFlights.length; i++) {
+          if (compareDate(filteredFlights[i].arrivalTime, req.body.arrivalTime)) {
+            flights.push(filteredFlights[i]);
+          }
+        }
+        res.status(200).send(flights);
+
+      } else if (req.body.departureTime &&!req.body.arrivalTime) {
+        let flights = [];
+        for (let i = 0; i < filteredFlights.length; i++) {
+          if (compareDate(filteredFlights[i].departureTime, req.body.departureTime)) {
+            flights.push(filteredFlights[i]);
+          }
+        }
+        res.status(200).send(flights);
+      } else {
+        let flights = [];
+        for (let i = 0; i < filteredFlights.length; i++) {
+          if (compareDate(filteredFlights[i].arrivalTime, req.body.arrivalTime) & compareDate(filteredFlights[i].departureTime, req.body.departureTime)) {
+            flights.push(filteredFlights[i]);
+          }
+        }
+        res.status(200).send(flights);
+      }
+    } else {      
     res.status(200).send(filteredFlights);
-    return;
-  }else{
-    res.status(400).json("Invalid Input!");
     return;
   }
 };
@@ -172,7 +217,6 @@ export const subscribeFlight = async (req, res) => {
         }
         else {
           flights.subscribers.push(subscriber);
-          console.log(flights.subscribers);
           axios({
             method: "get",
             url: "http://localhost:8000/mail/booking",

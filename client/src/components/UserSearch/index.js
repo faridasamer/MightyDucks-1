@@ -3,6 +3,7 @@ import { Grid, Paper, Select, FormControl, MenuItem, InputLabel, TextField, Butt
 import { LocalizationProvider, DatePicker } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import moment from "moment";
+import { formatDate } from "../../API/formatDate";
 
 function UserSearch() {
 
@@ -32,7 +33,8 @@ function UserSearch() {
     setPassengers(event.target.value);
   };
 
-
+  const handleSubmit = () => {
+  };
 
     return (
         <Grid container direction='row' wrap='nowrap'justifyContent="center"
@@ -89,7 +91,7 @@ function UserSearch() {
                     <DatePicker label="Return" value ={ret}  onChange={handleChangeReturn} renderInput={(params) => (<TextField {...params} sx={{ width: "20%", mr:"2em"}} />)}
                     sx={{ width: "20%", mr:"2em" }}/>
                     </Grid>
-                    <Grid item><Button variant="contained">Search</Button></Grid>
+                    <Grid item><Button variant="contained" onClick={()=>handleSubmit()} >Search</Button></Grid>
                 </Grid>
 
 

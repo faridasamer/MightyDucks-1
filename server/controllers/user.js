@@ -63,37 +63,37 @@ export const updateUser= async(req, res) => {
            
             
            for (let i = 0; i < keys.length; i++) {
-            if(keys[i] == "Email"){
+            if(keys[i] === "Email"){
                 user.Email = req.body.Email;
             };
-            if(keys[i] == "Username"){
+            if(keys[i] === "Username"){
                 user.Username = req.body.Username;
             };
-            if(keys[i] == "homeAddress"){
+            if(keys[i] === "homeAddress"){
                 user.homeAddress = req.body.homeAddress;
             };
-            if(keys[i] == "coutryCode"){
+            if(keys[i] === "coutryCode"){
                 user.coutryCode = req.body.coutryCode;
             };
-            if(keys[i] == "passportNumber"){
+            if(keys[i] === "passportNumber"){
                 user.passportNumber = req.body.passportNumber;
             };
-            if(keys[i] == "Password"){
+            if(keys[i] === "Password"){
                 user.Password = bcrypt.hashSync(req.body.Password, 10); //updates with the encrypted pass not plain text
             };
-            if(keys[i] == "Type"){
+            if(keys[i] === "Type"){
                 user.Type = req.body.Type;
             };
-            if(keys[i] == "firstName"){
+            if(keys[i] === "firstName"){
                 user.firstName = req.body.firstName;
             };
-            if(keys[i] == "lastName"){
+            if(keys[i] === "lastName"){
                user.lastName = req.body.lastName;
             };
-            if(keys[i] == "dateOfBirth"){
+            if(keys[i] === "dateOfBirth"){
                 user.dateOfBirth = Date.parse(req.body.dateOfBirth);
             }
-            if(keys[i] == "flightNumbers"){
+            if(keys[i] === "flightNumbers"){
                 user.flightNumbers = req.body.flightNumbers;
             }
         }
@@ -344,5 +344,50 @@ res.status(200).json(flights);
   } else {
     res.status(404).json("User not found!");
   }
+};
+
+export const searchFlights = async (req, res) => {
+ 
+  let query = {};
+  
+  if (req.body.from) {
+    query.from = req.body.from;
+  }
+  if (req.body.to) {
+    query.to = req.body.to;
+  }
+  if (req.body.departureDate) {
+    query.departureTime = req.body.departureDate;
+  }
+  if (req.body.arrivalDate) {
+    query.arrivalTime = req.body.arrivalDate;
+  }
+  if (req.body.price) {
+    query.price = req.body.price;
+  }
+  if (req.body.baggage) {
+    query.baggage = req.body.baggage;
+  }
+
+  let flights = [];
+  axios.post("http://localhost:8000/flight/search", 
+    query
+  ) 
+    .then(async (response) => {
+      if (response.data.length === 0) {
+        res.status(404).json("No Flights found!");
+      } else {
+        for (const flight in response.data) {
+          if (
+            response.data[flight][`seatsAvailable${req.body.class}`] >=
+            req.body.passengers
+          ) {
+            flights.push(response.data[flight]);
+          }
+        }
+        res.status(200).json(flights);
+      }
+    })
+    .catch((err) => res.status(410).json(err));
 };
 

@@ -13,6 +13,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Logo from "../Logo";
+import { Link } from "react-router-dom";
 
 //fixing navbar as we scroll
 function ElevationScroll(props) {
@@ -30,6 +31,7 @@ function ElevationScroll(props) {
 export default function Navbar(props) {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
+ 
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -39,7 +41,7 @@ export default function Navbar(props) {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (direction) => {
     setAnchorEl(null);
   };
 
@@ -139,8 +141,14 @@ export default function Navbar(props) {
                     }}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}>
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <Link to="user" state={{ user: "Aly", email:"alyyasser19@gmail.com"}} >
+                      <MenuItem onClick={() => handleClose("user")}>
+                        Profile
+                      </MenuItem>
+                    </Link>
+                    <MenuItem onClick={() => handleClose()}>
+                      My account
+                    </MenuItem>
                   </Menu>
                 </div>
               )}
