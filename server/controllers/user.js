@@ -1,4 +1,6 @@
 import user from '../models/user.js';
+import flight from '../models/flights.js';
+import axios from 'axios';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
 
@@ -7,7 +9,7 @@ export const addUser= async(req, res) => {
   const Email = req.body.Email;
   const Username = req.body.Username;
   const homeAddress =req.body.homeAddress;
-  const coutryCode =req.body.coutryCode;
+  const countryCode =req.body.countryCode;
   const passportNumber =req.body.passportNumber;
   const Password =req.body.Password;
   const passHashed = bcrypt.hashSync(Password, 10); //password after being hashed
@@ -22,7 +24,7 @@ export const addUser= async(req, res) => {
     Email:Email,
     Username:Username,
     homeAddress:homeAddress,
-    coutryCode:coutryCode,
+    countryCode:countryCode,
     passportNumber:passportNumber,
     Password:passHashed, //adds the hashed password not plain text
     Type:Type,
@@ -99,14 +101,14 @@ export const updateUser= async(req, res) => {
         
         .then(() => {
            
-            var updatedVlues="";
+            var updatedValues="";
             
             for (var key in req.body) { 
-                updatedVlues+=key + ", ";
+                updatedValues+=key + ", ";
             }
-            updatedVlues = updatedVlues.slice(0, -2) + ".";
-            updatedVlues = updatedVlues.slice(4);
-            res.status(200).json("updated values: " + updatedVlues)
+            updatedValues = updatedValues.slice(0, -2) + ".";
+            updatedValues = updatedValues.slice(4);
+            res.status(200).json("updated values: " + updatedValues)
          
             })
 
@@ -198,4 +200,149 @@ export const searchUsers = async (req, res) => {
     }else{
       res.status(400).json("Invalid Input!");
     }
-  };
+};
+  
+export const addFlightUser = async (req, res) => {
+  const flightNumber = req.body.flightNumber.toUpperCase();
+  let flightId;
+axios({
+  method: 'get',
+  url: "http://localhost:8000/flight/flightNumber",
+  headers: {}, 
+  data: {
+    flightNumber: flightNumber, 
+  }
+}).then(async (response) => {
+              if (response.data.length === 0) {
+                res.status(404).json("Flight not found!");
+              } else {
+                flightId = response.data._id;
+                const curUser = await user.findById(req.body._id);
+                if (curUser) {
+                  const flight = {
+                    flightNumber: req.body.flightNumber,
+                    price: req.body.price,
+                    baggage: req.body.baggage,
+                    seat: req.body.seat,
+                    bookingNumber: req.body.bookingNumber,
+                    class: req.body.class,
+                  };
+                  for (let i = 0; i < curUser.flights.length; i++){
+                    if (curUser.flights[i].flightNumber === flight.flightNumber) {
+                      res.status(400).json("Flight already exists!");
+                      return;
+                    }
+                  }
+                  curUser.flights.push(flight);
+                  curUser.save();
+                  axios({
+                    method: 'post',
+                    url: "http://localhost:8000/flight/subscribe",
+                    headers: {},
+                    data: {
+                      _id: flightId,
+                      flightNumber: flightNumber,
+                      subscriber: curUser.Email,
+                      price: flight.price,
+                      name: {first: curUser.firstName, last: curUser.lastName},
+                    }
+                  }).catch((err) => res.status(404).send(err));
+                  res.status(200).json("Flight added!");
+                } else {
+                  res.status(404).json("User not found!");
+                }
+              }
+            })
+            .catch((err) => res.status(410).json(err));
+};
+
+export const deleteFlightUser = async (req, res) => {
+  const flightNumber = req.body.flightNumber;
+  let flight;
+axios({
+  method: 'get',
+  url: "http://localhost:8000/flight/flightNumber",
+  headers: {}, 
+  data: {
+    flightNumber: flightNumber, 
+  }
+}).then(async (response) => {
+  flight=response.data;
+            if (response.data.length === 0) {
+              res.status(404).json("Flight not found!");
+            } else {
+              const curUser = await user.findById(req.body._id);
+              if (curUser) {
+                let found = false;
+                for (let i = 0; i < curUser.flights.length; i++) {
+                  if (curUser.flights[i].flightNumber === flightNumber) {
+                    curUser.flights.splice(i, 1);
+                    found = true;
+                    break;
+                  }
+                }
+                if (found) {
+                  curUser.save();
+                  axios({
+                    method: "post",
+                    url: "http://localhost:8000/flight/subscribe",
+                    headers: {},
+                    data: {
+                      _id: flight.id,
+                      flightNumber: flightNumber,
+                      subscriber: curUser.Email,
+                      price: flight.price,
+                      name: {
+                        first: curUser.firstName,
+                        last: curUser.lastName,
+                      },
+                    },
+                  }).catch((err) => res.status(404).send(err));
+                  res.status(200).json("Flight deleted!");
+                } else {
+                  res.status(404).json("Flight not found!");
+                }
+              } else {
+                res.status(404).json("User not found!");
+              }
+            }
+          })
+    .catch((err) => res.status(410).json(err));
+};
+
+ 
+export const getFlightsUser = async (req, res) => {
+  const curUser = await user.findById(req.body._id);
+  let flights = [];
+  if (curUser) {
+    if (curUser.flights.length === 0) {
+      res.status(404).json("No Flights found!");
+      return;
+    } else {
+      for (const flight in curUser.flights) {
+        const flightNumber = curUser.flights[flight].flightNumber;
+        axios({
+          method: "get",
+          url: "http://localhost:8000/flight/flightNumber",
+          headers: {},
+          data: {
+            flightNumber: flightNumber,
+          },
+        })
+          .then((response) => {
+            if (response.data.length === 0) {
+            } else {
+              flights.push(response.data);
+            }
+          })
+          .catch((err) => res.status(400).json("Invalid Input!"));
+      }
+    }
+    setTimeout(function () {
+res.status(200).json(flights);
+    }, 3000);
+  } else {
+    res.status(404).json("User not found!");
+  }
+};
+

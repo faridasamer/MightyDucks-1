@@ -120,8 +120,6 @@ function SearchFlight() {
             setLoad(false);
             });
     };
-    formatDate(arrivalTime);
-    formatDate(departureTime);
 
     return (
       <Grid
@@ -269,8 +267,8 @@ function SearchFlight() {
                     key={row.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                     <TableCell align='center'>{row.flightNumber}</TableCell>
-                    <TableCell align='center'>{row.arrivalTime}</TableCell>
-                    <TableCell align='center'>{row.departureTime}</TableCell>
+                    <TableCell align='center'>{formatDate(row.arrivalTime)}</TableCell>
+                    <TableCell align='center'>{formatDate(row.departureTime)}</TableCell>
                     <TableCell align='center'>{row.from}</TableCell>
                     <TableCell align='center'>{row.to}</TableCell>
                     <TableCell align='center'>

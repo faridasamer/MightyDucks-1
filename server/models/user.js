@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    coutryCode:{
+    countryCode:{
         type:String,
         length: 3,
         required: true
@@ -48,7 +48,7 @@ const userSchema = mongoose.Schema({
         type:Date,
         required: true
     },
-    flightNumbers: {
+    flights: {
         type:Array,
         default: [],
         required: true

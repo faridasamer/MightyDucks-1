@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import moment from "moment";
 import DateAdapter from "@mui/lab/AdapterMoment";
-import {formatDate} from "../../API/formatDate.js";
+
 
 function AddFlight() {
 //States 
@@ -86,8 +86,6 @@ function AddFlight() {
                 setErrorAlert(true);
               });
     }
-    formatDate(arrivalTime);
-    formatDate(departureTime);
 
   return (
     <Grid
