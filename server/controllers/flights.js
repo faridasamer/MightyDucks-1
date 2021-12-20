@@ -1,5 +1,6 @@
 
 import flights from "../models/flights.js";
+import axios  from "axios";
 
 
 
@@ -158,7 +159,6 @@ export const searchFlights = async (req, res) => {
 
 export const subscribeFlight = async (req, res) => {
   const subscriber = JSON.stringify(req.body.subscriber);
-  console.log(subscriber);
   if (req.body._id && req.body.subscriber) {
     flights
       .findById(req.body._id)
@@ -171,7 +171,19 @@ export const subscribeFlight = async (req, res) => {
             res.status(400).json("Already subscribed");
         }
         else {
-            flights.subscribers.push(subscriber);
+          flights.subscribers.push(subscriber);
+          console.log(flights.subscribers);
+          axios({
+            method: "get",
+            url: "http://localhost:8000/mail/booking",
+            headers: {},
+            data: {
+              email: req.body.email,
+              name: req.body.name.firstName + " " + req.body.name.lastName,
+              flightID: req.body.flightNumber,
+              price: req.body.price,
+            },
+          });
             flights
               .save()
               .then(() => res.json("user added!"))
@@ -197,6 +209,18 @@ export const unsubscribeFlight = async (req, res) => {
           res.status(400).json("Not subscribed");
         } else {
           flights.subscribers.splice(flights.subscribers.indexOf(subscriber), 1);
+                  axios({
+                    method: "get",
+                    url: "http://localhost:8000/mail/cancel",
+                    headers: {},
+                    data: {
+                      email: req.body.email,
+                      name:
+                        req.body.name.firstName + " " + req.body.name.lastName,
+                      flightID: req.body.flightNumber,
+                      refund: req.body.price,
+                    },
+                  });
           flights
             .save()
             .then(() => res.json("user removed!"))
@@ -232,7 +256,7 @@ export const getFlightByFlightNumber = async (req, res) => {
       .findOne({ flightNumber: req.body.flightNumber })
       .then((flights) => {
         if (!flights) {
-          res.status(400).json("Please enter a flight");
+          res.status(410).json("Please enter a flight");
         } else if (flights == null) {
           res.status(404).json("Flight not found ");
         } else {

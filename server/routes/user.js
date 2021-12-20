@@ -1,8 +1,7 @@
 import express from 'express';
 
-import { deleteUser, getUser, searchUsers } from '../controllers/user.js';
-import { addUser } from '../controllers/user.js';
-import { updateUser } from '../controllers/user.js';
+import { deleteUser, getUser, searchUsers, addUser, updateUser, addFlightUser,deleteFlightUser, getFlightsUser } from '../controllers/user.js';
+
 
 const router = express.Router();
 
@@ -11,5 +10,9 @@ router.post('/add', addUser );
 router.post('/update', updateUser);
 router.post('/delete', deleteUser);
 router.post('/search', searchUsers);
+router.post('/addFlight', addFlightUser);
+router.post('/deleteFlight', deleteFlightUser);
+router.get('/getFlights', getFlightsUser);
+
 
 export default router;
