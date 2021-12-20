@@ -48,7 +48,10 @@ function Login() {
     </Grid>);
 
   if (authorizedAdmin)
-    return <Navigate to='/admin' state ={{from: "Aly"}} />;
+    return <Navigate to='/admin' state={{ user: "admin" }} />;
+  
+  if (authorizedUser)
+    return <Navigate to='/home' state={{ user: "Aly", email:"alyyasser19@gmail.com" }} />;
   
     
   

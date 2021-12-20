@@ -59,7 +59,7 @@ function EditProfile() {
      direction="column"  
      justifyContent="center"
      alignItems="center"
-     sx={{width:"100%"}}>
+     sx={{width:"100%", mt: 10}}>
         <LocalizationProvider dateAdapter={DateAdapter}>
         <Avatar sx={{ bgcolor: "primary.main", width: 55, height: 55, mb:10, mt:2 }}>FA</Avatar>
         <Grid container 
