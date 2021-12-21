@@ -26,7 +26,8 @@ function SearchFlight() {
     const [arrival, setArrival] = useState(false);
     const [departure, setDeparture] = useState(false);
     const [load, setLoad] = useState(false);
-    const [flights, setFlights] = useState([]);
+  const [flights, setFlights] = useState([]);
+  const [duration, setDuration] = useState("");
 
 //Change Functions
     const handleChangeFlightNumber = (event) => {
@@ -67,7 +68,10 @@ function SearchFlight() {
     };
     const handleChangePriceFirst = (event) => {
         setPriceFirst(event.target.value);
-    };
+  };
+  const handleChangeDuration = (event) => {
+    setDuration(event.target.value);
+  };
 
         
     //Search Function
@@ -106,7 +110,10 @@ function SearchFlight() {
         }
         if (priceFirst !== "") {
             res.priceFirst = priceFirst;
-        }
+      }
+      if (duration !== "") {
+        res.duration = duration;
+      }
 
         axios
             .post("http://localhost:8000/flight/search", res)
@@ -227,6 +234,12 @@ function SearchFlight() {
             onChange={handleChangePriceFirst}
             sx={{ width: "40%" }}
           />
+          <TextField
+            label='Duration'
+            value={duration}
+            onChange={handleChangeDuration}
+            sx={{ width: "40%" }}
+          />
           <Button
             variant='contained'
             sx={{ width: "10%" }}
@@ -253,6 +266,7 @@ function SearchFlight() {
                 <TableCell align='center'>Price Economy</TableCell>
                 <TableCell align='center'>Price Business</TableCell>
                 <TableCell align='center'>Price First Class</TableCell>
+                <TableCell align='center'>Duration</TableCell>
               </TableRow>
             </TableHead>
             {load ? (
@@ -279,10 +293,11 @@ function SearchFlight() {
                     </TableCell>
                     <TableCell align='center'>
                       {row.seatsAvailableFirst}
-                        </TableCell>
+                    </TableCell>
                         <TableCell align='center'>{row.priceEco}</TableCell>
                         <TableCell align='center'>{row.priceBus}</TableCell>
-                        <TableCell align='center'>{row.priceFirst}</TableCell>
+                    <TableCell align='center'>{row.priceFirst}</TableCell>
+                    <TableCell align='center'>{row.duration}</TableCell>
                         <TableCell align='center'></TableCell>
                   </TableRow>
                 ))}

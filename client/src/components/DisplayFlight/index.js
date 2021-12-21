@@ -61,7 +61,8 @@ function DisplayFlight() {
                 <TableCell align='center'>Seats Available First</TableCell>
                 <TableCell align='center'>Price Economy</TableCell>
                 <TableCell align='center'>Price Business</TableCell>
-                <TableCell align='center'>Price First</TableCell>
+                  <TableCell align='center'>Price First</TableCell>
+                <TableCell align='center'>Duration</TableCell>
                 <TableCell align='center'>Delete</TableCell>
                 <TableCell align='center'>Edit</TableCell>
               </TableRow>
@@ -86,6 +87,7 @@ function DisplayFlight() {
                   <TableCell align='center'>{row.priceEco}</TableCell>
                   <TableCell align='center'>{row.priceBus}</TableCell>
                   <TableCell align='center'>{row.priceFirst}</TableCell>
+                  <TableCell align='center'>{row.duration}</TableCell>
                   <TableCell align='center'>
                     <IconButton
                       aria-label='delete'

@@ -18,6 +18,7 @@ export const addFlights = async (req, res) => {
   const priceBus = Number(req.body.priceBus);
   const priceFirst = Number(req.body.priceFirst);
   const subscribers = [];
+  const duration = Number(req.body.duration);
 
   const newFlight = new flights({
     from: from,
@@ -32,6 +33,7 @@ export const addFlights = async (req, res) => {
     priceBus: priceBus,
     priceFirst: priceFirst,
     subscribers: subscribers,
+    duration: duration,
   });
 
   newFlight
@@ -89,6 +91,12 @@ export const updateFlight = async (req, res) => {
           }
           if (keys[i] === "priceFirst") {
             flights.priceFirst = req.body.priceFirst;
+          }
+          if (keys[i] === "subscribers") {
+            flights.subscribers = req.body.subscribers;
+          }
+          if (keys[i] === "duration") {
+            flights.duration = req.body.duration;
           }
         }
         flights
@@ -161,7 +169,10 @@ export const searchFlights = async (req, res) => {
     }
     if (req.body.priceFirst) {
       body.priceFirst = req.body.priceFirst;
-    }
+  }
+  if (req.body.duration) {
+    body.duration = req.body.duration;
+  }
     if (body === {}) {
              filteredFlights = await flights.find();
     } else {
@@ -203,7 +214,7 @@ export const searchFlights = async (req, res) => {
 };
 
 export const subscribeFlight = async (req, res) => {
-  const subscriber = JSON.stringify(req.body.subscriber);
+  const subscriber = req.body.subscriber
   if (req.body._id && req.body.subscriber) {
     flights
       .findById(req.body._id)
@@ -217,17 +228,13 @@ export const subscribeFlight = async (req, res) => {
         }
         else {
           flights.subscribers.push(subscriber);
-          axios({
-            method: "get",
-            url: "http://localhost:8000/mail/booking",
-            headers: {},
-            data: {
-              email: req.body.email,
-              name: req.body.name.firstName + " " + req.body.name.lastName,
-              flightID: req.body.flightNumber,
-              price: req.body.price,
-            },
-          });
+          axios.post("http://localhost:8000/mail/booking", {
+            email: req.body.subscriber,
+            name: req.body.name.first + " " + req.body.name.last,
+            flightID: req.body.flightNumber,
+            price: req.body.price,
+          },
+          );
             flights
               .save()
               .then(() => res.json("user added!"))
@@ -240,7 +247,7 @@ export const subscribeFlight = async (req, res) => {
 };
 
 export const unsubscribeFlight = async (req, res) => {
-  const subscriber = JSON.stringify(req.body.subscriber);
+  const subscriber = req.body.subscriber
   if (req.body._id && req.body.subscriber) {
     flights
       .findById(req.body._id)
@@ -253,18 +260,13 @@ export const unsubscribeFlight = async (req, res) => {
           res.status(400).json("Not subscribed");
         } else {
           flights.subscribers.splice(flights.subscribers.indexOf(subscriber), 1);
-                  axios({
-                    method: "get",
-                    url: "http://localhost:8000/mail/cancel",
-                    headers: {},
-                    data: {
-                      email: req.body.email,
+                    axios.post("http://localhost:8000/mail/cancel", {
+                      email: req.body.subscriber,
                       name:
-                        req.body.name.firstName + " " + req.body.name.lastName,
+                        req.body.name.first + " " + req.body.name.last,
                       flightID: req.body.flightNumber,
                       refund: req.body.price,
-                    },
-                  });
+                    });
           flights
             .save()
             .then(() => res.json("user removed!"))
