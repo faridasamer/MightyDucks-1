@@ -13,6 +13,8 @@ import EditProfile from "./components/EditProfile";
 import Booking from "./pages/Booking";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import "./index.css"
+
 
 ReactDOM.render(
   <Router>

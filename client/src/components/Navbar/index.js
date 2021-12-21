@@ -4,16 +4,13 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Logo from "../Logo";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 //fixing navbar as we scroll
 function ElevationScroll(props) {
@@ -31,7 +28,15 @@ function ElevationScroll(props) {
 export default function Navbar(props) {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
- 
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location.pathname !== "/admin") {
+      setAuth(true);
+    } else {
+      setAuth(false);
+    }
+  }, [location]);
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -50,7 +55,9 @@ export default function Navbar(props) {
       <ElevationScroll {...props}>
         <AppBar color='offWhite' position='fixed'>
           <Toolbar>
-            <Logo />
+            <Link to={"home"}>
+              <Logo />
+            </Link>
             {auth && (
               <Grid
                 container
@@ -141,7 +148,9 @@ export default function Navbar(props) {
                     }}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}>
-                    <Link to="user" state={{ user: "Aly", email:"alyyasser19@gmail.com"}} >
+                    <Link
+                      to='user'
+                      state={{ user: "Aly", email: "alyyasser19@gmail.com" }}>
                       <MenuItem onClick={() => handleClose("user")}>
                         Profile
                       </MenuItem>
@@ -152,18 +161,6 @@ export default function Navbar(props) {
                   </Menu>
                 </div>
               )}
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={auth}
-                      onChange={handleChange}
-                      aria-label='login switch'
-                    />
-                  }
-                  label={auth ? "User" : "Admin"}
-                />
-              </FormGroup>
             </Grid>
           </Toolbar>
         </AppBar>

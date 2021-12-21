@@ -14,7 +14,7 @@ function Home() {
         axios
           .post("http://localhost:8000/user/searchFlights", {
             arrivalDate: arrivalDate,
-            DepartureDate: departureDate,
+            departureDate: departureDate,
             passengers: passengers,
             class: Class,
             from: from,

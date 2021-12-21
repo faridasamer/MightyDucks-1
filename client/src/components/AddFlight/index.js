@@ -25,6 +25,7 @@ function AddFlight() {
   const [priceBus, setPriceBus] = useState("");
   const [priceEco, setPriceEco] = useState("");
   const [priceFirst, setPriceFirst] = useState("");
+  const [duration, setDuration] = useState("");
     
 //Change functions
   const handleChangeFlightNumber = (event) => {
@@ -60,6 +61,9 @@ function AddFlight() {
   const handleChangePriceFirst = (event) => {
     setPriceFirst(event.target.value);
   };
+  const handleChangeDuration = (event) => {
+    setDuration(event.target.value);
+  };
 
 
 //Submit function
@@ -76,7 +80,8 @@ function AddFlight() {
                 seatsAvailableFirst,
                 priceBus,
                 priceEco,
-                priceFirst,
+              priceFirst,
+                duration,
               })
               .then(function (response) {
                 setOpen(true);
@@ -208,7 +213,14 @@ function AddFlight() {
           onChange={handleChangePriceFirst}
           sx={{ width: "40%" }}
         />
+        <TextField
+          label='Duration'
+          value={duration}
+          onChange={handleChangeDuration}
+          sx={{ width: "40%" }}
+        />
         <Button
+          type='submit'
           variant='contained'
           color='primary'
           onClick={() => {
