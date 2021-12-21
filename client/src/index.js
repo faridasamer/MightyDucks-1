@@ -13,23 +13,18 @@ import EditProfile from "./components/EditProfile";
 import Booking from "./pages/BookingV";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-import "./index.css"
+import "./index.css";
+import ViewSeats from "./pages/ViewSeats";
 
-
+const cabin = "First"
+const num = 2;
+const flight = {seats: [{seatNumber:"A1", seatType:"first", reserved:true}, {seatNumber:"A2", seatType:"first", reserved:false}, {seatNumber:"A3", seatType:"first", reserved:false}, {seatNumber:"A4", seatType:"first", reserved:false}, {seatNumber:"A5", seatType:"first", reserved:false}, {seatNumber:"A6", seatType:"first", reserved:false}, {seatNumber:"A7", seatType:"first", reserved:false}, {seatNumber:"A3", seatType:"business", reserved:false}, {seatNumber:"A1", seatType:"business", reserved:false}, {seatNumber:"A1", seatType:"economy", reserved:false},{seatNumber:"A1", seatType:"economy", reserved:false} ]}
 ReactDOM.render(
   <Router>
   <ToastContainer />
     <Box sx={{ m: -1, overflowX: "hidden" }}>
       <ThemeProvider theme={theme}>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='admin' element={<AdminDashboard />} />
-          <Route path='home' element={<Home />} />
-          <Route path='user' element={<User />} />
-          <Route path='user/modify/:id' element={<EditProfile />} />
-          <Route path='home/booking/:id' element={<Booking />} />
-        </Routes>
+        <ViewSeats N={num} classCabin={cabin} flight={flight}/>
       </ThemeProvider>
     </Box>
   </Router>,
