@@ -120,9 +120,14 @@ export const updateUser= async(req, res) => {
       .catch(err => res.status(400).json('Error: ' + err));;
 };
 
+export const getUsers =  async(req, res) => { 
+    const users = await user.find()
+      res.status(200).send(users);
+};
+
 export const getUser =  async(req, res) => { 
-    const test = await user.find()
-      res.status(200).send(test);
+    const users = await user.findOne({Username: req.body.Username})
+      res.status(200).send(users);
 };
 
 export const deleteUser = async(req, res) =>{

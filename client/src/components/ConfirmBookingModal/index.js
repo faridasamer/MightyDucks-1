@@ -1,17 +1,46 @@
 import React from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 
-function CancelFlightModal({ user, handleCloseCancel, OpenCancel }) {
-
-   //const _id = user._id;
+toast.configure();
+function ConfirmFlightModal({ user, flight, cabin, price, baggage, handleCloseConfirm, openConfirm, tickets }) {
+  const _id = user._id;
+  let data = {
+    _id : _id,
+    flightNumber: flight.flightNumber,
+    price: price,
+    baggage: baggage,
+    seat: "F16",
+    bookingNumber: JSON.stringify(Date.now()),
+    class: cabin,
+    tickets: tickets
+  }
+  console.log(data)
+  const handleConfirm = () => {
+    axios.post("http://localhost:8000/user/addFlight", data)
+      .then(()=> {
+          toast.success('Flight booked successfully!', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
+          handleCloseConfirm();
+      })
+      .catch((error) => {
+        toast.error('An error occurred', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
+        handleCloseConfirm();
+        console.log(error);
+      });
+  };
 
 
   return (
     <Modal
-      open={OpenCancel}
-      onClose={handleCloseCancel}
+      open={openConfirm}
+      onClose={handleCloseConfirm}
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'>
       <Box
@@ -33,6 +62,7 @@ function CancelFlightModal({ user, handleCloseCancel, OpenCancel }) {
           variant='outlined'
           color='success'
           sx={{ m: 2 }}
+          onClick={handleConfirm}
           >
           Yes
         </Button>
@@ -40,7 +70,7 @@ function CancelFlightModal({ user, handleCloseCancel, OpenCancel }) {
           variant='outlined'
           color='error'
           sx={{ m: 2 }}
-          onClick={handleCloseCancel}>
+          onClick={handleCloseConfirm}>
           No
         </Button>
       </Box>
@@ -48,4 +78,4 @@ function CancelFlightModal({ user, handleCloseCancel, OpenCancel }) {
   );
 }
 
-export default CancelFlightModal;
+export default ConfirmFlightModal;
