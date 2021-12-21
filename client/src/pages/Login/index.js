@@ -11,6 +11,7 @@ import {
 import { PersonOutlineOutlined, HttpsOutlined } from "@mui/icons-material/";
 import IMG from "../../assets/Ticket.png";
 import "./styles.css";
+import axios from "axios";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -20,7 +21,8 @@ function Login() {
   const [error, setError] = useState(false);
   const [user, setUser] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [userInfo, setUserInfo] = useState({});
+  let x;
   const handleUsername = (e) => {
     setUsername(e.target.value);
   };
@@ -32,12 +34,24 @@ function Login() {
     if(username==="admin" && password==="admin"){
       setAuthorizedAdmin(true);
       setError(false);
-    } else if (password === "user" && username === "user") {
-      setAuthorizedUser(true);
-      setError(false);
     } else {
-      setError(true);
-    }
+      axios.post("http://localhost:8000/user/getUser", {
+            Username: username
+          })
+          .then((res) => {
+              if(res.data){
+                setUserInfo(res.data);
+                setError(false);
+                setAuthorizedUser(true);
+              }
+              else{
+                setError(true)
+              }  
+          })
+          .catch((err) => {
+            setError(true);
+          });
+        }
   };
   const handleForget = () => { };
   
@@ -51,7 +65,10 @@ function Login() {
     return <Navigate to='/admin' state={{ user: "admin" }} />;
   
   if (authorizedUser)
-    return <Navigate to='/home' state={{ user: "Aly", email:"alyyasser19@gmail.com" }} />;
+  {
+    return <Navigate to='/home' state={{ user: userInfo }} />;
+
+  }
   
     
   

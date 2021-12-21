@@ -5,7 +5,7 @@ import DateAdapter from "@mui/lab/AdapterMoment";
 import moment from "moment";
 
 
-function UserSearch({search}) {
+function UserSearch({search, user}) {
 
     const [cabinClass, setCabinClass] = React.useState('');
     const [flightFrom, setFlightFrom] = React.useState('');
