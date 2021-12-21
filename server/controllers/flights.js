@@ -1,5 +1,5 @@
 
-import flights from "../models/flights.js";
+import {flights ,seat} from "../models/flights.js";
 import axios from "axios";
 import {compareDate}  from "../API/compareDate.js"
 
@@ -25,11 +25,11 @@ export const addFlights = async (req, res) => {
   let seatCounter = 1;
 
   for (let i = 0; i < seatsAvailableFirst; i++){
-    seats.push({
+    seats.push( new seat({
       seatNumber: curLetter + seatCounter,
       seatType: "First",
       reserved: false
-    })
+    }))
     seatCounter++;
     if (seatCounter === 9) {
       seatCounter = 1;
@@ -38,11 +38,11 @@ export const addFlights = async (req, res) => {
     }
   }
   for (let i = 0; i < seatsAvailableBus; i++){
-    seats.push({
+    seats.push(new seat({
       seatNumber: curLetter + seatCounter,
       seatType: "Bus",
       reserved: false
-    })
+    }))
     seatCounter++;
     if (seatCounter === 9) {
       seatCounter = 1;
@@ -51,11 +51,11 @@ export const addFlights = async (req, res) => {
     }
   }
   for (let i = 0; i < seatsAvailableEco; i++){
-    seats.push({
+    seats.push(new seat({
       seatNumber: curLetter + seatCounter,
       seatType: "Eco",
       reserved: false
-    })
+    }))
     seatCounter++;
     if (seatCounter === 9) {
       seatCounter = 1;

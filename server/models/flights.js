@@ -57,11 +57,29 @@ const flightSchema = mongoose.Schema({
   },
   seats: {
     type: Array,
-    default: [],
+    default: [{ type: mongoose.Schema.Types.ObjectId, ref: "Seat" }],
     required: true,
   },
 });
 
-var flights = mongoose.model('flights', flightSchema);
+const seatSchema = mongoose.Schema({
+  seatNumber: {
+    type: String,
+    required: true,
+  },
+  seatType: {
+    type: String,
+    required: true,
+  },
+  reserved: {
+    type: Boolean,
+    default: false,
+    required: true,
+  }
+});
+
+
+export var flights = mongoose.model('flights', flightSchema);
+export var seat = mongoose.model('seat', seatSchema);
 
 export default flights;
