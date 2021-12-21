@@ -11,6 +11,7 @@ function Home() {
     const [error, setError] = React.useState(false);
     const [passengerNo, setPassengerNo] = React.useState(0);
     const handleSearch = (Class, passengers, arrivalDate, departureDate, from, to) => {
+
         axios
           .post("http://localhost:8000/user/searchFlights", {
             arrivalDate: arrivalDate,
