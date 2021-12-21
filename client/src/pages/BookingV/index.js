@@ -535,7 +535,7 @@ function Booking() {
             tickets = {passengerNo}
           />
         </Grid>
-      </Grid>:<ViewSeats N={passengerNo} classCabin={cabinClass} flight={flight}/>}
+      </Grid>:<ViewSeats _id={user._id} baggage={baggage} price={fees} N={passengerNo} classCabin={cabinClass} flight={flight}/>}
       </>);
 }
 

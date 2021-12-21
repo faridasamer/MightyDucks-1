@@ -260,6 +260,7 @@ export const searchFlights = async (req, res) => {
 };
 
 export const subscribeFlight = async (req, res) => {
+
   const subscriber = req.body.subscriber
   if (req.body._id && req.body.subscriber) {
     flights
@@ -294,30 +295,32 @@ export const subscribeFlight = async (req, res) => {
 
 export const unsubscribeFlight = async (req, res) => {
   const subscriber = req.body.subscriber
+  let subscribers;
   if (req.body._id && req.body.subscriber) {
     flights
       .findById(req.body._id)
-      .then((flights) => {
-        if (!flights) {
+      .then((flight) => {
+        if (!flight) {
           res.status(400).json("Please enter a flight");
-        } else if (flights == null) {
+        } else if (flight == null) {
           res.status(404).json("Flight not found ");
-        } else if (!flights.subscribers.includes(subscriber)) {
+        } else if (!flight.subscribers.includes(subscriber)) {
           res.status(400).json("Not subscribed");
         } else {
-          flights.subscribers.splice(flights.subscribers.indexOf(subscriber), 1);
+          subscribers= flight.subscribers;
+          subscribers.splice(flight.subscribers.indexOf(subscriber), 1);
+          flight.subscribers=subscribers;
+                    flight.save()
+                      .then(() => res.json("user removed!"))
+                      .catch((err) => console.log("BIGCATCHError: " + err));
                     axios.post("http://localhost:8000/mail/cancel", {
-                      email: req.body.subscriber,
+                      email: req.body.subscriber, 
                       name:
                         req.body.name.first + " " + req.body.name.last,
                       flightID: req.body.flightNumber,
                       refund: req.body.price,
                     });
-          flights
-            .save()
-            .then(() => res.json("user removed!"))
-            .catch((err) => res.status(400).json("Error: " + err));
-        }
+        } 
       })
   } else {
     res.status(400).json("Invalid Input!");
@@ -359,4 +362,3 @@ export const getFlightByFlightNumber = async (req, res) => {
     res.status(400).json("Invalid Input!");
   }
 }
-
