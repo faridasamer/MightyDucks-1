@@ -223,6 +223,11 @@ axios({
       res.status(404).json("Flight not found!");
     } else {
       flightId = response.data._id;
+      flight.findById(flightId).then((curFlight) => {
+        curFlight[`seatsAvailable${req.body.class}`] -= 1;
+        curFlight.save();
+      });
+
       const curUser = await user.findById(req.body._id);
       if (curUser) {
         const flight = {

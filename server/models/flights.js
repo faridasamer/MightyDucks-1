@@ -55,6 +55,11 @@ const flightSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  seats: {
+    type: Array,
+    default: [],
+    required: true,
+  },
 });
 
 var flights = mongoose.model('flights', flightSchema);

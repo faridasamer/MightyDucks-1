@@ -19,6 +19,51 @@ export const addFlights = async (req, res) => {
   const priceFirst = Number(req.body.priceFirst);
   const subscribers = [];
   const duration = Number(req.body.duration);
+  const seats = []
+  let letterCounter = 65;
+  let curLetter = String.fromCharCode(letterCounter);
+  let seatCounter = 1;
+
+  for (let i = 0; i < seatsAvailableFirst; i++){
+    seats.push({
+      seatNumber: curLetter + seatCounter,
+      seatType: "First",
+      reserved: false
+    })
+    seatCounter++;
+    if (seatCounter === 9) {
+      seatCounter = 1;
+      letterCounter++;
+      curLetter = String.fromCharCode(letterCounter);
+    }
+  }
+  for (let i = 0; i < seatsAvailableBus; i++){
+    seats.push({
+      seatNumber: curLetter + seatCounter,
+      seatType: "Bus",
+      reserved: false
+    })
+    seatCounter++;
+    if (seatCounter === 9) {
+      seatCounter = 1;
+      letterCounter++;
+      curLetter = String.fromCharCode(letterCounter);
+    }
+  }
+  for (let i = 0; i < seatsAvailableEco; i++){
+    seats.push({
+      seatNumber: curLetter + seatCounter,
+      seatType: "Eco",
+      reserved: false
+    })
+    seatCounter++;
+    if (seatCounter === 9) {
+      seatCounter = 1;
+      letterCounter++;
+      curLetter = String.fromCharCode(letterCounter);
+    }
+  }
+
 
   const newFlight = new flights({
     from: from,
@@ -34,6 +79,7 @@ export const addFlights = async (req, res) => {
     priceFirst: priceFirst,
     subscribers: subscribers,
     duration: duration,
+    seats: seats
   });
 
   newFlight
