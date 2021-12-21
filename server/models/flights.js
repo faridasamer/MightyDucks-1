@@ -51,6 +51,10 @@ const flightSchema = mongoose.Schema({
     default: [],
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+  },
 });
 
 var flights = mongoose.model('flights', flightSchema);

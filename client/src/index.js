@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import User from "./pages/UserProfile";
 import EditProfile from "./components/EditProfile";
 import Booking from "./pages/Booking";
+import "./index.css"
 
 ReactDOM.render(
   <Router>
