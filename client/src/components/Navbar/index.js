@@ -4,8 +4,6 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -31,6 +29,7 @@ export default function Navbar(props) {
   const location = useLocation();
 
   React.useEffect(() => {
+    console.log(location)
     if (location.pathname !== "/admin") {
       setAuth(true);
     } else {
@@ -38,24 +37,21 @@ export default function Navbar(props) {
     }
   }, [location]);
 
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = (direction) => {
-    setAnchorEl(null);
-  };
 
   return (
     <Box sx={{ flexGrow: 1, height: "5em" }}>
       <ElevationScroll {...props}>
         <AppBar color='offWhite' position='fixed'>
           <Toolbar>
-            <Link to={"home"}>
+            <Link
+              to={"home"}
+              state={ "no user yet" }>
               <Logo />
             </Link>
             {auth && (
@@ -120,45 +116,24 @@ export default function Navbar(props) {
               alignItems='center'>
               {auth && (
                 <div>
-                  <IconButton
-                    size='large'
-                    aria-label='account of current user'
-                    aria-controls='menu-appbar'
-                    aria-haspopup='true'
-                    onClick={handleMenu}
-                    color='black'
-                    edge='end'>
-                    <AccountCircle
-                      sx={{
-                        fontSize: { md: "1.5em" },
-                      }}
-                    />
-                  </IconButton>
-                  <Menu
-                    id='menu-appbar'
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}>
-                    <Link
-                      to='user'
-                      state={{ user: "Aly", email: "alyyasser19@gmail.com" }}>
-                      <MenuItem onClick={() => handleClose("user")}>
-                        Profile
-                      </MenuItem>
-                    </Link>
-                    <MenuItem onClick={() => handleClose()}>
-                      My account
-                    </MenuItem>
-                  </Menu>
+                  <Link
+                    to='user'
+                    >
+                    <IconButton
+                      size='large'
+                      aria-label='account of current user'
+                      aria-controls='menu-appbar'
+                      aria-haspopup='true'
+                      onClick={handleMenu}
+                      color='black'
+                      edge='end'>
+                      <AccountCircle
+                        sx={{
+                          fontSize: { md: "1.5em" },
+                        }}
+                      />
+                    </IconButton>
+                  </Link>
                 </div>
               )}
             </Grid>

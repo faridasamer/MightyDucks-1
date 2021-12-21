@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import User from "./pages/UserProfile";
 import EditProfile from "./components/EditProfile";
-import Booking from "./pages/Booking";
+import Booking from "./pages/BookingV";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import "./index.css"
