@@ -8,6 +8,7 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 import formatDate from '../../API/formatDate'
 import moment from 'moment'
+import axios from "axios";
 
 
 
@@ -19,7 +20,7 @@ function Booking() {
   const cabinClass = location.state.cabinClass;
   const duration = 3
   const passengerNo = location.state.passengerNo;
-  const user = location.state.user
+  const userID = location.state.userID
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [userInfo, setUserInfo] = React.useState({})
   const [flightInfo, setFlightInfo] = React.useState({})
@@ -71,7 +72,16 @@ function Booking() {
   }
 
   React.useEffect( () => {
-    setUserInfo(user);
+    axios.post("http://localhost:8000/user/getUserByID", {
+            _id: userID
+          })
+          .then((res) => {
+              if(res.data){
+                setUserInfo(res.data);
+              }}
+          ).catch((error) => {
+            console.log(error)
+          })
     setFlightInfo(flight);
     setBaggageLimit(baggage)
     setCabin(fullClass)

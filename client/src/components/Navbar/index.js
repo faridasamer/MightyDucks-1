@@ -29,10 +29,9 @@ export default function Navbar(props) {
   const location = useLocation();
   const [curUser, setCurUser] = React.useState({});
   React.useEffect(() => {
-        console.log(location);
         if (location.pathname === "/") {
           setCurUser({ state: "not logged in" });
-        } else {
+        } if(location.pathname === '/home') {
           setCurUser(location.state.user);
         }
     if (
@@ -44,7 +43,7 @@ export default function Navbar(props) {
     } else {
       setAuth(false);
     }
-  }, [location]);
+  }, [location, curUser]);
 
 
 
@@ -126,7 +125,7 @@ export default function Navbar(props) {
               {auth && (
                 <div>
                   <Link
-                    to='user' state={{user:curUser}}>
+                    to='user' state={{userID:curUser._id}}>
                     <IconButton
                       size='large'
                       aria-label='account of current user'
