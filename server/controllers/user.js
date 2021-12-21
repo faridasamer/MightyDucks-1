@@ -1,5 +1,6 @@
 import user from '../models/user.js';
 import flight from '../models/flights.js';
+import { seat } from "../models/flights.js";
 import axios from 'axios';
 import bcrypt from 'bcrypt';
 import validator from 'validator';
@@ -210,6 +211,7 @@ export const searchUsers = async (req, res) => {
 export const addFlightUser = async (req, res) => {
   const flightNumber = req.body.flightNumber.toUpperCase();
   let flightId;
+  let cabinClass;
 axios({
   method: "get",
   url: "http://localhost:8000/flight/flightNumber",
@@ -223,28 +225,47 @@ axios({
       res.status(404).json("Flight not found!");
     } else {
       flightId = response.data._id;
-      flight.findById(flightId).then((curFlight) => {
-        curFlight[`seatsAvailable${req.body.class}`] -= 1;
-        curFlight.save();
-      });
-
       const curUser = await user.findById(req.body._id);
       if (curUser) {
-        const flight = {
+        const curFlight = {
           flightNumber: req.body.flightNumber,
           price: req.body.price,
           baggage: req.body.baggage,
-          seat: req.body.seat,
+          seat: req.body.seats,
           bookingNumber: req.body.bookingNumber,
           class: req.body.class,
         };
         for (let i = 0; i < curUser.flights.length; i++) {
-          if (curUser.flights[i].flightNumber === flight.flightNumber) {
+          if (curUser.flights[i].flightNumber === curFlight.flightNumber) {
             res.status(400).json("Flight already exists!");
             return;
           }
         }
-        curUser.flights.push(flight);
+        flight.findById(flightId).then((curFlight) => {
+          if (req.body.class === "Economy") {
+            cabinClass = "Eco";
+          } else if (req.body.class === "Business") {
+            cabinClass = "Bus";
+          } else if (req.body.class === "First") {
+            cabinClass = "First";
+          }
+            
+                curFlight[`seatsAvailable${req.body.class}`] -= 1;
+          for (let seat in curFlight.seats) {
+            for (let i = 0; i < req.body.seats.length; i++) {
+              if (curFlight.seats[seat].seatNumber === req.body.seats[i]) {
+                curFlight.seats[seat].reserved = true;
+                curFlight.seats[seat] = curFlight.seats[seat];
+                curFlight.seats= curFlight.seats;
+                //curFlight.seats[seat].save()
+                
+                console.log(curFlight.seats[seat]);
+              }
+            }
+                }
+                curFlight.save();
+              });
+        curUser.flights.push(curFlight);
         curUser.save();
         axios
           .post("http://localhost:8000/flight/subscribe", {
@@ -269,8 +290,10 @@ axios({
 
 export const deleteFlightUser = async (req, res) => {
   const flightNumber = req.body.flightNumber;
-  let flight;
+  let curFlight;
   let buyer;
+  let cabinClass;
+  let seats;
 axios({
   method: "get",
   url: "http://localhost:8000/flight/flightNumber",
@@ -279,42 +302,64 @@ axios({
     flightNumber: flightNumber,
   },
 }).then(async (response) => {
-    flight = response.data;
+  curFlight = response.data;
+  
     if (response.data.length === 0) {
       res.status(404).json("Flight not found!");
     } else {
-      const curUser = await user.findById(req.body._id);
-      if (curUser) {
-        let found = false;
-        for (let i = 0; i < curUser.flights.length; i++) {
-          if (curUser.flights[i].flightNumber === flightNumber) {
-            buyer = curUser.flights[i];
-            curUser.flights.splice(i, 1);
-            found = true;
-            break;
+      user.findById(req.body._id).then((curUser) => {
+        if (curUser) {
+          let found = false;
+          for (let i = 0; i < curUser.flights.length; i++) {
+            if (curUser.flights[i].flightNumber === flightNumber) {
+              buyer = curUser.flights[i];
+              seats = buyer.seats;
+
+              if (curUser.flights[i].class === "First") {
+                cabinClass = "First";
+              } else if (curUser.flights[i].class === "Business") {
+                cabinClass = "Bus";
+              } else {
+                cabinClass = "Eco";
+              }
+                            curUser.flights.splice(i, 1);
+                            found = true;
+              break;
+            }
           }
-        }
-        if (found) {
-          curUser.save();
-          axios
-            .post("http://localhost:8000/flight/unsubscribe", {
-              _id: flight._id,
-              flightNumber: flightNumber,
-              subscriber: curUser.Email,
-              price: buyer.price,
-              name: {
-                first: curUser.firstName,
-                last: curUser.lastName,
-              },
-            })
-            .catch((err) => res.status(404).send(err));
-          res.status(200).json("Flight deleted!");
+          if (found) {
+            curUser.save();
+          
+            flight.findById(curFlight._id).then((curFlight) => {
+              curFlight[`seatsAvailable${cabinClass}`] += 1;
+              for (let seat in curFlight.seats) {
+                for (let i = 0; i < seats; i++)
+                  if (seat.seatNumber === req.body.seats[i]) {
+                    seat.reserved = false;
+                  }
+              }
+              curFlight.save();
+            });
+            axios
+              .post("http://localhost:8000/flight/unsubscribe", {
+                _id: curFlight._id,
+                flightNumber: flightNumber,
+                subscriber: curUser.Email,
+                price: buyer.price,
+                name: {
+                  first: curUser.firstName,
+                  last: curUser.lastName,
+                },
+              })
+              .catch((err) => res.status(404).send(err));
+            res.status(200).json("Flight deleted!");
+          } else {
+            res.status(404).json("Flight not found!");
+          }
         } else {
-          res.status(404).json("Flight not found!");
+          res.status(404).json("User not found!");
         }
-      } else {
-        res.status(404).json("User not found!");
-      }
+      } );
     }
   })
   .catch((err) => res.status(410).json(err));

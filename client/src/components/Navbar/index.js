@@ -27,10 +27,19 @@ export default function Navbar(props) {
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const location = useLocation();
-
+  const [curUser, setCurUser] = React.useState({});
   React.useEffect(() => {
-    console.log(location)
-    if (location.pathname !== "/admin") {
+        console.log(location);
+        if (location.pathname === "/") {
+          setCurUser({ state: "not logged in" });
+        } else {
+          setCurUser(location.state.user);
+        }
+    if (
+      (location.pathname !== "/admin" &&
+      location.pathname !== "/" )  &&
+      curUser.Type==="N"
+    ) {
       setAuth(true);
     } else {
       setAuth(false);
@@ -51,7 +60,7 @@ export default function Navbar(props) {
           <Toolbar>
             <Link
               to={"home"}
-              state={ "no user yet" }>
+              state={{user:curUser} }>
               <Logo />
             </Link>
             {auth && (
@@ -117,8 +126,7 @@ export default function Navbar(props) {
               {auth && (
                 <div>
                   <Link
-                    to='user'
-                    >
+                    to='user' state={{user:curUser}}>
                     <IconButton
                       size='large'
                       aria-label='account of current user'
