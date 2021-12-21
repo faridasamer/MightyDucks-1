@@ -1,7 +1,7 @@
 import React from "react";
 import {useEffect } from "react";
 import {useLocation} from "react-router-dom";
-import CancelFlightModal from "../../components/ConfirmBookingModal";
+import ConfirmFlightModal from "../../components/ConfirmBookingModal";
 
 import { Grid, Paper, Typography, Divider,Button } from "@mui/material";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
@@ -15,16 +15,17 @@ import moment from 'moment'
 function Booking() {
   const location = useLocation();
 
-
-  
   const flight = location.state.flight;
   const cabinClass = location.state.cabinClass;
-  const duration= 3
-
-  useEffect(() => {
-    console.log(flight);
-    console.log(cabinClass);
-  }, [flight, cabinClass]);
+  const duration = 3
+  const passengerNo = location.state.passengerNo;
+  const user = location.state.user
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState({})
+  const [flightInfo, setFlightInfo] = React.useState({})
+  const [baggageLimit, setBaggageLimit] = React.useState(0);
+  const [cabin, setCabin] = React.useState("");
+  const [fees, setFees] = React.useState(0);
 
   let baggage;
   if (cabinClass === "Eco")
@@ -53,6 +54,8 @@ function Booking() {
   {
     fullClass = "First Class"
   }
+  
+
   let price;
   if (cabinClass === "Eco")
   {
@@ -67,18 +70,22 @@ function Booking() {
     price = flight.priceFirst;
   }
 
-
+  React.useEffect( () => {
+    setUserInfo(user);
+    setFlightInfo(flight);
+    setBaggageLimit(baggage)
+    setCabin(fullClass)
+    setFees(price * passengerNo)
+  },[])
 
   let from = flight.from;
   let to = flight.to;
   let departureDate = flight.departureTime;
   let arrivalDate = flight.arrivalTime;
   
-
-
-  const [OpenCancel, setOpenCancel] = React.useState(false);
-    const handleOpenCancel = () => setOpenCancel(true);
-    const handleCloseCancel = () => setOpenCancel(false);
+  
+  const handleOpenConfirm = () => setOpenConfirm(true);
+  const handleCloseConfirm = () => setOpenConfirm(false);
     return (
       <Grid container direction='row' wrap='nowrap' sx={{ mt: 10 }}>
         <Grid
@@ -462,7 +469,7 @@ function Booking() {
                   mt: "0.75em",
                   ml: "1.5em",
                 }}>
-                1 Ticket
+               {passengerNo === 1 ? '1 Ticket' : passengerNo + ' Tickets' }
               </Typography>
               <Typography
                 variant='h6'
@@ -474,7 +481,7 @@ function Booking() {
                   mt: "1em",
                   ml: "1.9em",
                 }}>
-                Flight fee: 250$
+                Flight fee: { price * passengerNo }$
               </Typography>
               <Typography
                 variant='h6'
@@ -500,7 +507,7 @@ function Booking() {
               mt: "2em",
             }}
             onClick={() => {
-              handleOpenCancel();
+              handleOpenConfirm();
             }}>
             Confirm Booking
           </Button>
@@ -515,10 +522,15 @@ function Booking() {
             onClick={() => {}}>
             Select Seats
           </Button>
-
-          <CancelFlightModal
-            OpenCancel={OpenCancel}
-            handleCloseCancel={handleCloseCancel}
+          <ConfirmFlightModal
+            openConfirm={openConfirm}
+            handleCloseConfirm={handleCloseConfirm}
+            flight = {flightInfo}
+            user = {userInfo}
+            cabin = {cabin}
+            price = {fees}
+            baggage = {baggageLimit}
+            tickets = {passengerNo}
           />
         </Grid>
       </Grid>

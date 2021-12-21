@@ -11,9 +11,12 @@ import Home from "./pages/Home";
 import User from "./pages/UserProfile";
 import EditProfile from "./components/EditProfile";
 import Booking from "./pages/Booking";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 ReactDOM.render(
   <Router>
+  <ToastContainer />
     <Box sx={{ m: -1, overflowX: "hidden" }}>
       <ThemeProvider theme={theme}>
         <Navbar />
