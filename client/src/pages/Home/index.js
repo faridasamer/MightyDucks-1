@@ -35,8 +35,8 @@ function Home() {
     return (
         <Grid container sx={{ mt: 5, placeContent: "center" }} >
             {error && <Typography variant="h5" sx={{ color: "secondary.main"}}>Please Enter All Search Requirements</Typography>}
-            <UserSearch search={handleSearch} user = {Location.state.user}/>
-            <SearchResults flights={flights} user = {Location.state.user} cabinClass={cabinClass} passengerNo={passengerNo}/>
+            <UserSearch search={handleSearch} userID = {Location.state.user._id}/>
+            <SearchResults flights={flights} userID = {Location.state.user._id} cabinClass={cabinClass} passengerNo={passengerNo}/>
         </Grid>
     )
 }
