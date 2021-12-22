@@ -14,7 +14,6 @@ import formatDate from "../../API/formatDate";
 function FlightDetails() {
   const location = useLocation();
 
-
   const { flight, userID } = location.state;
   const [baggage, setBaggage] = React.useState(0);
   const [seats, setSeats] = React.useState(0);

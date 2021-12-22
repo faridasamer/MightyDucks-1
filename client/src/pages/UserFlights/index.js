@@ -64,7 +64,7 @@ function UserFlightView() {
           });
     }, []);
     
-  if (error) 
+  if (error || past === undefined || upcoming === undefined) 
     return (
       <Grid container justify="center" alignItems="center" sx={{mt:10, color:"primary.main", placeContent: "center" }}>
         <Typography variant="h4">{errorMessage}</Typography>

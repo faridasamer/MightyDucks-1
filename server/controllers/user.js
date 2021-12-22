@@ -392,7 +392,7 @@ export const getFlightsUser = async (req, res) => {
   let flights = [];
   if (curUser) {
     if (curUser.flights.length === 0) {
-      res.status(404).json("No Flights found!");
+      res.status(200).json([]);
       return;
     } else {
       for (const flight in curUser.flights) {

@@ -6,34 +6,37 @@ import 'react-toastify/dist/ReactToastify.css'
 
 
 toast.configure();
-function ConfirmFlightModal({ user, flight, cabin, price, baggage, handleCloseConfirm, openConfirm, tickets }) {
-  const _id = user._id;
-  let data = {
-    _id : _id,
-    flightNumber: flight.flightNumber,
-    price: price,
-    baggage: baggage,
-    seat: "F16",
-    bookingNumber: JSON.stringify(Date.now()),
-    class: cabin,
-    tickets: tickets
-  }
-  console.log(data)
+function ConfirmFlightModal({ handleCloseConfirm, openConfirm, setConfirmed, handleCon }) {
+  // const _id = user._id;
+  // let data = {
+  //   _id : _id,
+  //   flightNumber: flight.flightNumber,
+  //   price: price,
+  //   baggage: baggage,
+  //   seat: "F16",
+  //   bookingNumber: JSON.stringify(Date.now()),
+  //   class: cabin,
+  //   tickets: tickets
+  // }
+  // console.log(data)
   const handleConfirm = () => {
-    axios.post("http://localhost:8000/user/addFlight", data)
-      .then(()=> {
-          toast.success('Flight booked successfully!', {
-          position: toast.POSITION.BOTTOM_RIGHT
-        })
-          handleCloseConfirm();
-      })
-      .catch((error) => {
-        toast.error('An error occurred', {
-          position: toast.POSITION.BOTTOM_RIGHT
-        })
-        handleCloseConfirm();
-        console.log(error);
-      });
+    setConfirmed(true);
+    handleCon();
+  
+    // axios.post("http://localhost:8000/user/addFlight", data)
+    //   .then(()=> {
+    //       toast.success('Flight booked successfully!', {
+    //       position: toast.POSITION.BOTTOM_RIGHT
+    //     })
+    //       handleCloseConfirm();
+    //   })
+    //   .catch((error) => {
+    //     toast.error('An error occurred', {
+    //       position: toast.POSITION.BOTTOM_RIGHT
+    //     })
+    //     handleCloseConfirm();
+    //     console.log(error);
+    //   });
   };
 
 
@@ -62,7 +65,7 @@ function ConfirmFlightModal({ user, flight, cabin, price, baggage, handleCloseCo
           variant='outlined'
           color='success'
           sx={{ m: 2 }}
-          onClick={handleConfirm}
+          onClick={() => { handleConfirm();}}
           >
           Yes
         </Button>
@@ -70,7 +73,7 @@ function ConfirmFlightModal({ user, flight, cabin, price, baggage, handleCloseCo
           variant='outlined'
           color='error'
           sx={{ m: 2 }}
-          onClick={handleCloseConfirm}>
+          onClick={() => { handleCloseConfirm();}}>
           No
         </Button>
       </Box>
