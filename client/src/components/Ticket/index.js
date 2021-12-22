@@ -9,6 +9,7 @@ function Ticket({ flight, cabinClass, onClick, passengerNo, userID }) {
   const from = flight.from;
   const to = flight.to;
   const departureDate = flight.departureTime;
+  const duration = flight.duration;
   const arrivalDate = flight.arrivalTime;
   let price = flight.price;
   if (cabinClass === "Eco")
@@ -36,10 +37,10 @@ function Ticket({ flight, cabinClass, onClick, passengerNo, userID }) {
         variant='outlined'
         sx={{ width: "70%", height: "auto" }}>
         <Grid container direction='column' sx={{ mt: "2em", ml: "0.5em" }}>
-          <TicketFromTo from={from} to={to} date={departureDate} duration={3} />
+          <TicketFromTo from={from} to={to} date={departureDate} duration={duration} />
         </Grid>
         <Grid container direction='column' sx={{ mt: "1em", ml: "0.5em" }}>
-          <TicketFromTo from={to} to={from} date={arrivalDate} duration={3} />
+          <TicketFromTo from={to} to={from} date={arrivalDate} duration={duration} />
         </Grid>
       </Paper>
       <Paper

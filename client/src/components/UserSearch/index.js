@@ -84,9 +84,9 @@ function UserSearch({search, user}) {
                     <Grid container direction='row' sx={{mb:"2em"}} wrap='nowrap'>
                     <TextField id="outlined-basic" label="From" variant="outlined" sx={{mr:"1em"}} value ={flightFrom} onChange={handleChangeFlightFrom} />
                     <TextField id="outlined-basic" label="To" variant="outlined" sx={{mr:"2em"}} value ={flightTo} onChange={handleChangeFlightTo}/>
-                    <DatePicker label="Departure" value ={departure} onChange={handleChangeDeparture} renderInput={(params) => (<TextField {...params} sx={{ width: "20%", mr:"1em"}} />)}
+                    <DatePicker label="Departure" disablePast value ={departure} onChange={handleChangeDeparture} renderInput={(params) => (<TextField {...params} sx={{ width: "20%", mr:"1em"}} />)}
                     sx={{ width: "20%", mr:"1em" }}/>
-                    <DatePicker label="Return" value ={ret}  onChange={handleChangeReturn} renderInput={(params) => (<TextField {...params} sx={{ width: "20%", mr:"2em"}} />)}
+                    <DatePicker label="Return" value ={ret} disablePast  onChange={handleChangeReturn} renderInput={(params) => (<TextField {...params} sx={{ width: "20%", mr:"2em"}} />)}
                     sx={{ width: "20%", mr:"2em" }}/>
                     </Grid>
                     <Grid item><Button variant="contained" onClick={()=>(search(cabinClass, passengers, departure, ret,flightFrom,flightTo))} >Search</Button></Grid>
