@@ -30,7 +30,13 @@ function Booking() {
   const [baggageLimit, setBaggageLimit] = React.useState(0);
   const [cabin, setCabin] = React.useState("");
   const [fees, setFees] = React.useState(0);
-const [seats, setSeats] = React.useState(false);
+  const [seats, setSeats] = React.useState(false);
+  
+    let from = flight.from;
+    let to = flight.to;
+    let departureDate = flight.departureTime;
+  let arrivalDate = flight.arrivalTime;
+
 
   let baggage;
   if (cabinClass === "Eco")
@@ -92,10 +98,7 @@ const [seats, setSeats] = React.useState(false);
     setFees(price * passengerNo)
   },[])
 
-  let from = flight.from;
-  let to = flight.to;
-  let departureDate = flight.departureTime;
-  let arrivalDate = flight.arrivalTime;
+
   
   
   const handleOpenConfirm = () => setOpenConfirm(true);
@@ -314,7 +317,8 @@ const [seats, setSeats] = React.useState(false);
                     mt: "1.3em",
                     ml: "1.5em",
                   }}>
-                  {fullClass} | Seat number: 18F | {baggage} Bag(s) | 23KG/Bag
+                  {fullClass} | {" "}
+                  {baggage} Bag(s) | 23KG/Bag
                 </Typography>
               </Grid>
             </Paper>
@@ -446,7 +450,8 @@ const [seats, setSeats] = React.useState(false);
                     mt: "1.3em",
                     ml: "1.5em",
                   }}>
-                  {fullClass} | Seat number: 16A | {baggage} Bag(s) | 23KG/Bag
+                  {fullClass}|{" "}
+                  {baggage} Bag(s) | 23KG/Bag
                 </Typography>
               </Grid>
             </Paper>
@@ -520,7 +525,7 @@ const [seats, setSeats] = React.useState(false);
                 </Typography>
               </Grid>
             </Paper>
-            <Button
+            {/* <Button
               variant='contained'
               sx={{
                 width: "40%",
@@ -532,7 +537,7 @@ const [seats, setSeats] = React.useState(false);
                 handleOpenConfirm();
               }}>
               Confirm Booking
-            </Button>
+            </Button> */}
             <Button
               variant='contained'
               sx={{

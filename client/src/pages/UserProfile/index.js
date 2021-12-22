@@ -49,7 +49,7 @@ function UserProfile(user) {
               </Avatar>
             </Grid>
             <Grid item sx={{ mb: 10 }}>
-            <Link to={"itinerary"} state ={{ _id: location.state.userID}}>
+            <Link to={"flights"} state ={{ _id: location.state.userID}}>
               <Button variant='outlined' size='small'>
                 My Flights
               </Button>

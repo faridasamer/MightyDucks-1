@@ -28,6 +28,7 @@ function DisplayFlight() {
 
     //fetching Flights
   useEffect(() => {
+    console.log('displayFlight')
     axios
       .get("http://localhost:8000/flight/")
       .then(function (response) {
