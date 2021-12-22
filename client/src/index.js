@@ -9,6 +9,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import User from "./pages/UserProfile";
+import Itinerary from "./pages/Itinerary";
 import EditProfile from "./components/EditProfile";
 import Booking from "./pages/BookingV";
 import { ToastContainer } from 'react-toastify';
@@ -27,6 +28,7 @@ ReactDOM.render(
           <Route path='admin' element={<AdminDashboard />} />
           <Route path='home' element={<Home />} />
           <Route path='user' element={<User />} />
+          <Route path='user/itinerary' element={<Itinerary/>} />
           <Route path='user/modify/:id' element={<EditProfile />} />
           <Route path='home/booking/:id' element={<Booking />} />
         </Routes>

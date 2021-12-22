@@ -4,7 +4,7 @@ import { Grid, Paper, Typography, Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { Link } from "react-router-dom";
 
-function Ticket({ flight, cabinClass, onClick, passengerNo, user }) {
+function Ticket({ flight, cabinClass, onClick, passengerNo, userID }) {
 
   const from = flight.from;
   const to = flight.to;
@@ -54,7 +54,7 @@ function Ticket({ flight, cabinClass, onClick, passengerNo, user }) {
             Price :
           </Typography>
           <Typography variant='h4'>{price * passengerNo}$</Typography>
-          <Link to="booking/214214" replace={true} state={{flight:flight, cabinClass: cabinClass, passengerNo:passengerNo, user: user}}>
+          <Link to="booking/214214" replace={true} state={{flight:flight, cabinClass: cabinClass, passengerNo:passengerNo, userID: userID}}>
             <Button
               variant='contained'
               endIcon={<SendIcon />}

@@ -1,11 +1,42 @@
 import React from "react";
 import { Modal, Box, Typography, Button } from "@mui/material";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 
-function UpdateUserModal({ user, handleCloseEdit, openEdit }) {
+toast.configure();
 
-   //const _id = user._id;
+function UpdateUserModal({ _id, newUsername, newEmail, newFirst, newLast, newPassport, newDob, newHome, newCountry, handleCloseEdit, openEdit }) {
+
+  const data = {
+    _id: _id,
+    Email: newEmail,
+    Username: newUsername,
+    homeAddress: newHome,
+    countryCode: newCountry,
+    passportNumber: newPassport,
+    firstName: newFirst,
+    lastName: newLast,
+    dateOfBirth: newDob
+}
+  const handleEdit = () => {
+  axios.post("http://localhost:8000/user/update", data)
+      .then(()=> {
+          toast.success('User updated successfully!', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
+          handleCloseEdit();
+      })
+      .catch((error) => {
+        toast.error('An error occurred', {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
+        handleCloseEdit();
+        console.log(error);
+      });
+  };
+
 
 
   return (
@@ -33,6 +64,7 @@ function UpdateUserModal({ user, handleCloseEdit, openEdit }) {
           variant='outlined'
           color='success'
           sx={{ m: 2 }}
+          onClick={handleEdit}
           >
           SAVE
         </Button>
