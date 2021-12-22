@@ -362,3 +362,4 @@ export const getFlightByFlightNumber = async (req, res) => {
     res.status(400).json("Invalid Input!");
   }
 }
+
