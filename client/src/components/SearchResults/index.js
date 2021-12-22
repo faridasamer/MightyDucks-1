@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid,Typography } from "@mui/material";
 import  Ticket  from "../Ticket";
 
-function SearchResults({ flights, cabinClass, passengerNo, userID }) {
+function SearchResults({ flights, cabinClass, passengerNo, user }) {
 
     const [noFlights,setNoflights] = React.useState(false);
 
@@ -24,7 +24,7 @@ function SearchResults({ flights, cabinClass, passengerNo, userID }) {
             {noFlights && <Typography variant="h5" sx={{ color: "secondary.main" }}>No Flights Found</Typography>}
             {flights.map((flight, index) => {
                 return (
-                    <Ticket flight={flight} cabinClass={cabinClass} key={index} passengerNo={passengerNo} userID={userID}/>
+                    <Ticket flight={flight} cabinClass={cabinClass} key={index} passengerNo={passengerNo} user={user}/>
                 )
             })}
         </Grid>
