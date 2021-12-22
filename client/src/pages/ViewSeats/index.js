@@ -29,16 +29,17 @@ function ViewSeats({_id, flight, classCabin, N, price, baggage}) {
   var e=[[]];
   var b=[[]];
 
-
+  const handleSemiConfirm = () => { 
+setOpenConfirm(true);
+  }
  
   const handleConfirm = () => {
-    setOpenConfirm(true);
     if(selected.length<N){
       toast.warn('Not enough seats selected', {
         position: toast.POSITION.BOTTOM_RIGHT
       })
     }
-    else if(isConfirm){
+    else {
       axios
         .post("http://localhost:8000/user/addFlight", {
             _id:_id,
@@ -364,7 +365,7 @@ useEffect(() => {
             })}
         </Grid>
         <Grid item>
-          <Button onClick={handleConfirm} variant='contained'>
+          <Button onClick={handleSemiConfirm} variant='contained'>
             Confirm Selection
           </Button>
         </Grid>
