@@ -416,7 +416,7 @@ export const getFlightsUser = async (req, res) => {
     }
     setTimeout(function () {
 res.status(200).json(flights);
-    }, 3000);
+    }, 1000);
   } else {
     res.status(404).json("User not found!");
   }

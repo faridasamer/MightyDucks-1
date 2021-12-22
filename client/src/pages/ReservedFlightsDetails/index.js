@@ -5,6 +5,7 @@ import moment from "moment";
 import { Grid, Paper, Typography, Divider, Button, CircularProgress } from "@mui/material";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import formatDate from "../../API/formatDate";
 
 
@@ -12,6 +13,8 @@ import formatDate from "../../API/formatDate";
 
 function FlightDetails() {
   const location = useLocation();
+
+
   const { flight, userID } = location.state;
   const [baggage, setBaggage] = React.useState(0);
   const [seats, setSeats] = React.useState(0);
@@ -19,7 +22,7 @@ function FlightDetails() {
   const [bookingNumber, setBookingNumber] = React.useState(0);
   const [fullClass, setFullClass] = React.useState("");
   const [user, setUser] = React.useState({});
-  const [OpenCancel, setOpenCancel] = React.useState(false);
+  const [openCancel, setOpenCancel] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const handleOpenCancel = () => setOpenCancel(true);
   const handleCloseCancel = () => setOpenCancel(false);
@@ -31,7 +34,7 @@ function FlightDetails() {
   
 
 
-  React.useEffect(() => {;
+  React.useEffect(() => {
     axios.post(`http://localhost:8000/user/getUserByID`, {
       _id: userID
     }).then(res => {
@@ -283,7 +286,8 @@ function FlightDetails() {
                   mt: "1.3em",
                   ml: "1.5em",
                 }}>
-                {fullClass} | Seat Number(seats): {seats} | {baggage} Bag(s) | 23KG/Bag
+                {fullClass} | Seat Number(seats): {seats} | {baggage} Bag(s) |
+                23KG/Bag
               </Typography>
             </Grid>
           </Paper>
@@ -500,8 +504,8 @@ function FlightDetails() {
             Cancel Flight
           </Button>
           <CancelFlightModal
-            openConfirm={OpenCancel}
-            handleCloseConfirm={handleCloseCancel}
+            OpenCancel={openCancel}
+            handleCloseCancel={handleCloseCancel}
             flight={flight}
             user={user}
             seats={seats}

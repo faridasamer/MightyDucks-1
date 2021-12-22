@@ -1,27 +1,35 @@
 import React from 'react'
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Typography, CircularProgress } from "@mui/material";
 import Ticket from '../../components/ReservedFlights';
 import axios from "axios";
 
 
 
+
 function UserFlightView() {
 
-      const location = useLocation();
-      const _id = location.state._id;
+  const location = useLocation();
+  let _id = location.state._id;
+  if (!_id) {
+    _id=location.state.userID;
+  }
       const [upcoming, setUpcoming] = React.useState({});
       const [past, setPast] = React.useState({});
     const [flights, setFlights] = React.useState({});
     const [noFlights, setNoflights] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
 
 
       var pastFlights = [];
     var upcomingFlights = [];
     
-    React.useEffect(() => {
+  React.useEffect(() => {
+    console.log(location.state);
+    console.log(_id)
                     if (flights.length === 0) {
                       setNoflights(true);
                     } else {
@@ -45,17 +53,24 @@ function UserFlightView() {
             setUpcoming(upcomingFlights);
               setPast(pastFlights);
               setLoading(false);
+              setError(false);
               console.log(res.data);
           })
           .catch((err) => {
             console.log(err);
+            setLoading(false);
+            setError(true);
+            setErrorMessage("No Flights Booked");
           });
     }, []);
     
-            if (flights[0] === "empty") {
-              return <Grid></Grid>;
-    }
-    
+  if (error) 
+    return (
+      <Grid container justify="center" alignItems="center" sx={{mt:10, color:"primary.main", placeContent: "center" }}>
+        <Typography variant="h4">{errorMessage}</Typography>
+      </Grid>
+    );
+  else  
     if (loading) {    
         return (
             <Grid container direction="column" justify="center" alignItems="center">
@@ -63,7 +78,7 @@ function UserFlightView() {
             </Grid>
         );
     }
-    
+    else
     return (
       <Grid container direction='column' sx={{ width: "90%", alignItems: "center", mt: 10, ml: 15 }}>
         {noFlights && (
