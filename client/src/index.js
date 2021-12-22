@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 import theme from "./theme";
 import Navbar from "./components/Navbar";
 import AdminDashboard from "./pages/AdminDashboard";
+import Itinerary from "./pages/Itinerary";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import User from "./pages/UserProfile";
@@ -31,6 +32,7 @@ ReactDOM.render(
           <Route path='user/itinerary' element={<Itinerary/>} />
           <Route path='user/modify/:id' element={<EditProfile />} />
           <Route path='home/booking/:id' element={<Booking />} />
+          <Route path='/itinerary' element={<Itinerary />} />
         </Routes>
       </ThemeProvider>
     </Box>
