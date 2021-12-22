@@ -13,10 +13,7 @@ function CancelFlightModal({ user, handleCloseCancel, OpenCancel, flight, seats 
     flightNumber: flight.flightNumber,
     seats: seats
     }
-  React.useEffect(() => {
-    console.log("Cancel Flight");
-  }, [])
-  
+
   const handleDelete = () => {
     axios.post("http://localhost:8000/user/deleteFlight", data)
       .then(()=> {
@@ -33,7 +30,7 @@ function CancelFlightModal({ user, handleCloseCancel, OpenCancel, flight, seats 
         console.log(error);
       });
     setTimeout(() => {
-      navigate("/user/flights", {replace : true});
+      navigate("/user/flights", {replace : true, state: {_id: user._id}});
     }
       , 1000);
   
