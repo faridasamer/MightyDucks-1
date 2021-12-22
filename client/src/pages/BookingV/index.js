@@ -8,6 +8,9 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 import formatDate from '../../API/formatDate'
 import moment from 'moment'
+
+import ViewSeats from "../ViewSeats";
+
 import axios from "axios";
 
 
@@ -27,6 +30,7 @@ function Booking() {
   const [baggageLimit, setBaggageLimit] = React.useState(0);
   const [cabin, setCabin] = React.useState("");
   const [fees, setFees] = React.useState(0);
+  const [seats, setSeats] = React.useState(false)
 
   let baggage;
   if (cabinClass === "Eco")
@@ -96,8 +100,8 @@ function Booking() {
   
   const handleOpenConfirm = () => setOpenConfirm(true);
   const handleCloseConfirm = () => setOpenConfirm(false);
-    return (
-      <Grid container direction='row' wrap='nowrap' sx={{ mt: 10 }}>
+    return (<>
+      {!seats?<Grid container direction='row' wrap='nowrap' sx={{ mt: 10 }}>
         <Grid
           container
           direction='column'
@@ -521,6 +525,7 @@ function Booking() {
             }}>
             Confirm Booking
           </Button>
+          
           <Button
             variant='contained'
             sx={{
@@ -529,7 +534,7 @@ function Booking() {
               fontSize: "1em",
               mt: "2em",
             }}
-            onClick={() => {}}>
+            onClick={() => {setSeats(true)}}>
             Select Seats
           </Button>
           <ConfirmFlightModal
@@ -543,8 +548,8 @@ function Booking() {
             tickets = {passengerNo}
           />
         </Grid>
-      </Grid>
-    );
+      </Grid>:<ViewSeats _id={user._id} baggage={baggage} price={fees} N={passengerNo} classCabin={cabinClass} flight={flight}/>}
+      </>);
 }
 
 export default Booking

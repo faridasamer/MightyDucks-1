@@ -246,6 +246,8 @@ axios({
             return;
           }
         }
+                         curUser.flights.push(curFlight);
+                         curUser.save();
         flight.findById(flightId).then((curFlight) => {
           if (req.body.class === "Economy") {
             cabinClass = "Eco";
@@ -255,35 +257,37 @@ axios({
             cabinClass = "First";
           }
             
-                curFlight[`seatsAvailable${req.body.class}`] -= 1;
-          for (let seat in curFlight.seats) {
+                curFlight[`seatsAvailable${req.body.class}`] -= req.body.seats.length;
+          for (let curSeat in curFlight.seats) {
             for (let i = 0; i < req.body.seats.length; i++) {
-              if (curFlight.seats[seat].seatNumber === req.body.seats[i]) {
-                curFlight.seats[seat].reserved = true;
-                curFlight.seats[seat] = curFlight.seats[seat];
-                curFlight.seats= curFlight.seats;
-                //curFlight.seats[seat].save()
+              if (curFlight.seats[curSeat].seatNumber === req.body.seats[i]) {
+                curFlight.seats[curSeat].reserved = true;
+                const updatedSeat = new seat({
+                  seatNumber: req.body.seats[i],
+                  reserved: true,
+                  seatType: curFlight.seats[curSeat].seatType,
+                });
+                curFlight.seats.splice(curSeat, 1, updatedSeat);
                 
-                console.log(curFlight.seats[seat]);
+
               }
             }
-                }
-                curFlight.save();
+          }
+          curFlight.save();
               });
-        curUser.flights.push(curFlight);
-        curUser.save();
+//
         axios
           .post("http://localhost:8000/flight/subscribe", {
             _id: flightId,
             flightNumber: flightNumber,
             subscriber: curUser.Email,
-            price: flight.price,
+            price: curFlight.price,
             name: {
               first: curUser.firstName,
               last: curUser.lastName,
             },
           })
-          .catch((err) => res.status(404).send(err));
+          .catch((err) => console.log(err.data));
         res.status(200).json("Flight added!");
       } else {
         res.status(404).json("User not found!");
@@ -298,7 +302,6 @@ export const deleteFlightUser = async (req, res) => {
   let curFlight;
   let buyer;
   let cabinClass;
-  let seats;
 axios({
   method: "get",
   url: "http://localhost:8000/flight/flightNumber",
@@ -318,7 +321,6 @@ axios({
           for (let i = 0; i < curUser.flights.length; i++) {
             if (curUser.flights[i].flightNumber === flightNumber) {
               buyer = curUser.flights[i];
-              seats = buyer.seats;
 
               if (curUser.flights[i].class === "First") {
                 cabinClass = "First";
@@ -336,14 +338,24 @@ axios({
             curUser.save();
           
             flight.findById(curFlight._id).then((curFlight) => {
-              curFlight[`seatsAvailable${cabinClass}`] += 1;
-              for (let seat in curFlight.seats) {
-                for (let i = 0; i < seats; i++)
-                  if (seat.seatNumber === req.body.seats[i]) {
-                    seat.reserved = false;
+              curFlight[`seatsAvailable${cabinClass}`] += req.body.seats.length;
+              for (let curSeat in curFlight.seats) {
+                for (let i = 0; i < req.body.seats.length; i++) {
+                  if (
+                    curFlight.seats[curSeat].seatNumber === req.body.seats[i]
+                  ) {
+                    curFlight.seats[curSeat].reserved = false;
+                    const updatedSeat = new seat({
+                      seatNumber: req.body.seats[i],
+                      reserved: false,
+                      seatType: curFlight.seats[curSeat].seatType,
+                    });
+                    curFlight.seats.splice(curSeat, 1, updatedSeat);
+                  
                   }
+                }
               }
-              curFlight.save();
+               curFlight.save();
             });
             axios
               .post("http://localhost:8000/flight/unsubscribe", {
@@ -356,13 +368,16 @@ axios({
                   last: curUser.lastName,
                 },
               })
-              .catch((err) => res.status(404).send(err));
+              .catch((err) =>console.log(err.message));
             res.status(200).json("Flight deleted!");
+            return;
           } else {
             res.status(404).json("Flight not found!");
+            return;
           }
         } else {
           res.status(404).json("User not found!");
+          return;
         }
       } );
     }
@@ -453,4 +468,3 @@ export const searchFlights = async (req, res) => {
     })
     .catch((err) => res.status(410).json(err));
 };
-

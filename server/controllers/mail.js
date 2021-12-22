@@ -28,7 +28,6 @@ function sendMail(mailOptions) {
 export const Cancel = async (req, res) => {
     const user = process.env.EMAIL;
     const { email, name, flightID, refund } = req.body;
-    console.log(req.body);
     const mailOptions = {
         from: user,
         to: email,
