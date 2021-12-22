@@ -468,3 +468,4 @@ export const searchFlights = async (req, res) => {
     })
     .catch((err) => res.status(410).json(err));
 };
+
