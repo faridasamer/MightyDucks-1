@@ -8,7 +8,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Logo from "../Logo";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 //fixing navbar as we scroll
 function ElevationScroll(props) {
@@ -24,11 +24,13 @@ function ElevationScroll(props) {
 }
 
 export default function Navbar(props) {
+  const navigate= useNavigate();
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const location = useLocation();
   const [curUser, setCurUser] = React.useState({});
   React.useEffect(() => {
+    console.log("navbar");
         if (location.pathname === "/") {
           setCurUser({ state: "not logged in" });
         } if(location.pathname === '/home') {
@@ -57,9 +59,7 @@ export default function Navbar(props) {
       <ElevationScroll {...props}>
         <AppBar color='offWhite' position='fixed'>
           <Toolbar>
-            <Link
-              to={"home"}
-              state={{user:curUser} }>
+            <Link to={"home"} state={{ user: curUser }}>
               <Logo />
             </Link>
             {auth && (
@@ -72,6 +72,12 @@ export default function Navbar(props) {
                   variant='text'
                   size='large'
                   color='menuItem'
+                  onClick={() =>
+                    navigate("/user/flights", {
+                      replace: true,
+                      state: { userID: curUser._id },
+                    })
+                  }
                   sx={{
                     width: "20em",
                     display: {
@@ -79,12 +85,13 @@ export default function Navbar(props) {
                       md: "block",
                     },
                   }}>
-                  Book & Manage
+                  View Flights
                 </Button>
                 <Button
                   variant='text'
                   size='large'
                   color='menuItem'
+                  onClick={() => navigate("/", { replace: true })}
                   sx={{
                     width: "20em",
                     display: {
@@ -92,7 +99,7 @@ export default function Navbar(props) {
                       md: "block",
                     },
                   }}>
-                  Prepare & Travel
+                  LOGOUT
                 </Button>
               </Grid>
             )}
@@ -103,6 +110,7 @@ export default function Navbar(props) {
                 alignItems='center'
                 sx={{ ml: 2 }}>
                 <Button
+                  onClick={() => navigate("/", { replace: true })}
                   variant='text'
                   size='large'
                   color='menuItem'
@@ -113,7 +121,7 @@ export default function Navbar(props) {
                       md: "block",
                     },
                   }}>
-                  Manage Flights
+                  LOGIN
                 </Button>
               </Grid>
             )}
@@ -124,8 +132,7 @@ export default function Navbar(props) {
               alignItems='center'>
               {auth && (
                 <div>
-                  <Link
-                    to='user' state={{userID:curUser._id}}>
+                  <Link to='user' state={{ userID: curUser._id }}>
                     <IconButton
                       size='large'
                       aria-label='account of current user'

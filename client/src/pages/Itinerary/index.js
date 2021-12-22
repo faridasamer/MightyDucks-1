@@ -2,42 +2,9 @@ import React from "react";
 import { Grid, Paper, Typography, Divider } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Icon from '@mui/material/Icon';import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
-import { grid, } from "@mui/system";
-import { Link, useLocation } from "react-router-dom"
-import axios from "axios"
-function Itinerary() {
-  const location = useLocation()
-  const _id = location.state._id;
-  const [upcoming, setUpcoming] = React.useState({})
-  const [past, setPast] = React.useState({})
-  const [flights, setFlights] = React.useState({})
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
-  var pastFlights = [];
-  var upcomingFlights= [] ;
-  React.useEffect(() => {
-      axios.post("http://localhost:8000/user/getFlights", {
-            _id: _id
-          })
-          .then((res) => {
-              if(res.data){
-                res.data.map((flight) => {
-                  if(new Date(flight.departureTime) > new Date()) {
-                    upcomingFlights.push(flight)
-                  }
-                  else if(new Date(flight.departureTime) < new Date()) {
-                    pastFlights.push(flight)
-                  }
-                })
-              }
-              setFlights(res.data)
-              setUpcoming(upcomingFlights)
-              setPast(pastFlights)  
-          })
-          .catch((err) => {
-            console.log(err)
-          });
-    }, [])
+function Itinerary() {
     return (
         <Grid container direction='row' wrap='nowrap' sx={{marginTop:'2em'}}> 
         <Grid container direction='column' wrap='nowrap' marginLeft='3em' width='180%'>

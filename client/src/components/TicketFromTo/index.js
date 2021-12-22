@@ -8,8 +8,8 @@ function FlightFromTo({ from, to, date, duration }) {
 
   const dateFrom = formatDate(date);
   const dateTo = formatDate(moment(date).add(duration, "h"));
-  const timeFrom = dateFrom.substring(11, 16);
-  const timeTo = dateTo.substring(11, 16);
+  const timeFrom = dateFrom.substring(11, 20);
+  const timeTo = dateTo.substring(11, 20);
   const dayFrom = dateFrom.substring(0, 10);
   const dayTo = dateTo.substring(0, 10);
   

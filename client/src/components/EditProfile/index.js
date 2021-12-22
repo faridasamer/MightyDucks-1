@@ -27,7 +27,8 @@ function EditProfile() {
     const [homeAddress, setHomeAddress] = useState("");
     const [countryCode, setCountryCode] = useState("");
     const [openEdit, setOpenEdit] = React.useState(false);
-    React.useEffect(()=>{
+  React.useEffect(() => {
+      console.log("Edit Profile");
       axios.post("http://localhost:8000/user/getUserByID", {
             _id: location.state._id
           })
