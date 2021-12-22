@@ -6,6 +6,12 @@ import bcrypt from 'bcrypt';
 import validator from 'validator';
 
 
+export const getUserByID = async (req, res) => {
+  const users = await user.findOne({ _id: req.body._id });
+  res.status(200).send(users);
+};
+
+
 export const addUser= async(req, res) => {
   const Email = req.body.Email;
   const Username = req.body.Username;

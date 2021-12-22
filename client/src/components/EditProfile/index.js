@@ -10,25 +10,47 @@ import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
 import { LocalizationProvider, DatePicker } from "@mui/lab";
 import moment from "moment";
 import DateAdapter from "@mui/lab/AdapterMoment";
-
+import { Link, useLocation } from "react-router-dom";
+import axios from 'axios';
 import UpdateUserModal from "./../UpdateUserModal";
 
 function EditProfile() {
+    
+    const location = useLocation();
 
-    //states
     const [Username, setUsername] = useState("");
     const [Email, setEmail] = useState("");
-    const [firstName, setfirstName] = useState("");
-    const [lastName, setlastName] = useState("");
-    const [passportNumber, setpassportNumber] = useState("");
-    const [dateOfBirth, setdateOfBirth] = useState(moment());
-    const [homeAddress, sethomeAddress] = useState("");
-    const [countryCode, setcountryCode] = useState("");
-
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [passportNumber, setPassportNumber] = useState("");
+    const [dateOfBirth, setDateOfBirth] = useState(moment());
+    const [homeAddress, setHomeAddress] = useState("");
+    const [countryCode, setCountryCode] = useState("");
     const [openEdit, setOpenEdit] = React.useState(false);
+    React.useEffect(()=>{
+      axios.post("http://localhost:8000/user/getUserByID", {
+            _id: location.state._id
+          })
+          .then((res) => {
+              if(res.data){
+                setUsername(res.data.Username);
+                setEmail(res.data.Email);
+                setFirstName(res.data.firstName);
+                setLastName(res.data.lastName)
+                setPassportNumber(res.data.passportNumber)
+                setDateOfBirth(res.data.dateOfBirth)
+                setHomeAddress(res.data.homeAddress)
+                setCountryCode(res.data.countryCode)
+              }
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+        },[location])
+        
+    
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
-
     //handle
     const handleChangeUsername = (event) => {
         setUsername(event.target.value);
@@ -37,31 +59,32 @@ function EditProfile() {
         setEmail(event.target.value);
         };
         const handleChangeFirstName = (event) => {
-        setfirstName(event.target.value);
+        setFirstName(event.target.value);
         };
         const handleChangeLastName = (event) => {
-        setlastName(event.target.value);
+        setLastName(event.target.value);
         };
         const handleChangePassportNumber = (event) => {
-        setpassportNumber(event.target.value);
+        setPassportNumber(event.target.value);
         };
         const handleDateOfBirth = (newValue) => {
-        setdateOfBirth(moment.utc(moment.utc(newValue).format()));
+        setDateOfBirth(moment.utc(moment.utc(newValue).format()));
         };
         const handleChangeHomeAddress = (event) => {
-        sethomeAddress(event.target.value);
+        setHomeAddress(event.target.value);
         };
         const handleChangeCountryCode = (event) => {
-        setcountryCode(event.target.value);
+        setCountryCode(event.target.value);
         };
     return (
+        
      <Grid container 
      direction="column"  
      justifyContent="center"
      alignItems="center"
      sx={{width:"100%", mt: 10}}>
         <LocalizationProvider dateAdapter={DateAdapter}>
-        <Avatar sx={{ bgcolor: "primary.main", width: 55, height: 55, mb:10, mt:2 }}>FA</Avatar>
+        <Avatar sx={{ bgcolor: "primary.main", width: 55, height: 55, mb:10, mt:2 }}>{firstName && (firstName).charAt(0)+(lastName).charAt(0)}</Avatar>
         <Grid container 
         direction="column"  
         justifyContent="left"
@@ -108,6 +131,15 @@ function EditProfile() {
         <UpdateUserModal
         openEdit={openEdit}
         handleCloseEdit={handleCloseEdit}
+        newUsername = {Username}
+        newEmail = {Email}
+        newFirst = {firstName}
+        newLast = {lastName}
+        newPassport = {passportNumber}
+        newDob = {dateOfBirth}
+        newHome = {homeAddress}
+        newCountry = {countryCode}
+        _id = {location.state._id}
       />
      </Grid>
     )
