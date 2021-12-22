@@ -6,28 +6,10 @@ import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
-import { Link, useLocation } from "react-router-dom";
-import axios from 'axios';
+import { Link } from "react-router-dom";
 
 function UserProfile(user) {
-    const location = useLocation();
-    const[userInfo, setUserInfo] = React.useState({})
-
-    React.useEffect(() => {
-    axios.post("http://localhost:8000/user/getUserByID", {
-            _id: location.state.userID
-          })
-          .then((res) => {
-              if(res.data){
-                setUserInfo(res.data);
-                console.log(res.data)
-                console.log(userInfo)
-              }}
-          ).catch((error) => {
-            console.log(error)
-          })
-  },[])
-  
+    const {Username, Email, firstName, lastName, passportNumber, dateOfBirth, homeAddress, coutryCode} = user;
     return (
       <Grid container align='center' sx={{ mt: 10 }}>
         <Grid
@@ -45,15 +27,13 @@ function UserProfile(user) {
             wrap='nowrap'>
             <Grid item>
               <Avatar sx={{ bgcolor: "primary.main", width: 55, height: 55 }}>
-                {userInfo.firstName && (userInfo.firstName).charAt(0)+(userInfo.lastName).charAt(0)}
+                FA
               </Avatar>
             </Grid>
             <Grid item sx={{ mb: 10 }}>
-            <Link to={"itinerary"} state ={{ _id: location.state.userID}}>
               <Button variant='outlined' size='small'>
                 My Flights
               </Button>
-            </Link>
             </Grid>
           </Grid>
           <Grid
@@ -72,7 +52,7 @@ function UserProfile(user) {
                 Username:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.Username}
+                Farida12
               </Typography>
               <Typography
                 variant='body1'
@@ -82,7 +62,7 @@ function UserProfile(user) {
                 First Name:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.firstName}
+                Farida
               </Typography>
               <Typography
                 variant='body1'
@@ -92,7 +72,7 @@ function UserProfile(user) {
                 Last Name:{" "}
               </Typography>
               <Typography display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.lastName}
+                Aldesouky
               </Typography>
             </Grid>
             <Grid container sx={{ ml: 40, mb: 5 }}>
@@ -105,7 +85,7 @@ function UserProfile(user) {
                 Email:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.Email}
+                farida@gmail.com
               </Typography>
             </Grid>
             <Grid container sx={{ ml: 40, mb: 5 }}>
@@ -118,7 +98,7 @@ function UserProfile(user) {
                 Passport Number:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.passportNumber}
+                12345
               </Typography>
             </Grid>
             <Grid container sx={{ ml: 40, mb: 5 }}>
@@ -131,7 +111,7 @@ function UserProfile(user) {
                 Date of Birth:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && (userInfo.dateOfBirth).substring(0,10)}
+                2/2/2000
               </Typography>
             </Grid>
             <Grid container sx={{ ml: 40, mb: 5 }}>
@@ -144,7 +124,7 @@ function UserProfile(user) {
                 Address:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.homeAddress}
+                5th Settlement
               </Typography>
             </Grid>
             <Grid container sx={{ ml: 40, mb: 2 }}>
@@ -157,11 +137,11 @@ function UserProfile(user) {
                 Country:{" "}
               </Typography>
               <Typography variant='body1' display='inline' sx={{ ml: 2 }}>
-                {userInfo.firstName && userInfo.countryCode}
+                Egypt
               </Typography>
             </Grid>
           </Grid>
-          <Link to={`/user/modify/${userInfo.firstName && userInfo.Username}`} state ={{ _id: location.state.userID}}>
+          <Link to={`/user/modify/${"alyyasser19@gmail.com"}`}>
             <Button variant='contained' size='small'>
               EDIT PROFILE
             </Button>

@@ -131,11 +131,6 @@ export const getUser =  async(req, res) => {
       res.status(200).send(users);
 };
 
-export const getUserByID =  async(req, res) => { 
-    const users = await user.findOne({_id: req.body._id})
-      res.status(200).send(users);
-};
-
 export const deleteUser = async(req, res) =>{
     if (req.body._id){
     user.findByIdAndRemove(req.body._id)
